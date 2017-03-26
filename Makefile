@@ -6,7 +6,7 @@
 #    By: bsouchet <bsouchet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/04 18:49:05 by bsouchet          #+#    #+#              #
-#    Updated: 2017/03/25 16:13:08 by gmonein          ###   ########.fr        #
+#    Updated: 2017/03/26 21:56:03 by gmonein          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ FLAGS = -O3
 
 LIBFT = libft
 
-DIR_S = test
+DIR_S = sources
 
 DIR_O = temporary
 
@@ -26,7 +26,12 @@ DIR_MLX = mlx/minilibx_el_capitan
 
 HEADERS = includes
 
-SOURCES = test.c \
+SOURCES = fractal.c \
+		  init.c \
+		  key_hook.c \
+		  main.c \
+		  misc.c \
+		  mouse_hook.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
