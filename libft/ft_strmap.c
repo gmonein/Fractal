@@ -16,9 +16,7 @@ char	*ft_strmap(char const *s, char (*f)(char))
 {
 	char	*fresh;
 	int		len;
-	int		i;
 
-	i = 0;
 	len = 0;
 	if (s == NULL)
 		return (NULL);

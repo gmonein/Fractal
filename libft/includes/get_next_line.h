@@ -16,6 +16,9 @@
 # include "libft.h"
 
 # define BUFF_SIZE 3
+# ifndef OPEN_MAX
+#  define OPEN_MAX 256
+# endif
 
 int				get_next_line(int const fd, char **line);
 

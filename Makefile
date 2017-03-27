@@ -24,6 +24,8 @@ DIR_O = temporary
 
 DIR_MLX = mlx/minilibx_el_capitan
 
+DIR_MLX_X11 = mlx/minilibx_X11
+
 HEADERS = includes
 
 SOURCES = fractal.c \
@@ -44,6 +46,10 @@ $(NAME): $(OBJS)
 	@make -C $(DIR_MLX)
 	@$(CC) $(FLAGS) -L $(LIBFT) -lft -o $@ $^ -framework OpenGL -framework AppKit -L $(DIR_MLX) -lmlx
 
+X11: temporary $(OBJS)
+	@make -C $(LIBFT)
+	$(CC) $(FLAGS) -o $(NAME) -L $(LIBFT) $(OBJS) mlx/minilibx_X11/libmlx.a -lm -lXext -lX11
+
 temporary:
 	@mkdir -p temporary
 
@@ -63,4 +69,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all fdf
+.PHONY: all X11

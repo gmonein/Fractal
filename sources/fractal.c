@@ -14,24 +14,35 @@
 
 void		mandelbrot(t_all *a)
 {
-	t_cpx	c;
-	t_cpx	z;
+	double complex c;
+	double complex z;
+	double complex tmp;
 	int		i;
 	int		x;
 	int		y;
-	
+	struct timespec tms;
+
+	clock_gettime(CLOCK_REALTIME,&tms);
+	a->time = tms.tv_sec;
+	a->micro = tms.tv_nsec;
 	x = -1;
 	while (++x < IMGF_X && (y = -1) == -1)
-		while (++y < IMGF_)
+		while (++y < IMGF_Y)
 			{
-				c.r = x / a->mdlb->zoom + a->mdlb->x1;
-				c.i = y / a->mdlb->zoom + a->mdlb->y1;
-				z = (t_cpx){0, 0};
-				i = -1;
-				while (z.r*z.r + z.i*z.i < 4 && ++i < a->mdlb->i_max)
-						z = cpx_add(cpx_mul(z, z), c);
+				z = 0;
+				i = 0;
+				c = x / a->mdlb->zoom + a->mdlb->x1 +\
+					(y / a->mdlb->zoom + a->mdlb->y1) * I;
+				//creal(z) * creal(z) - creal(i) * creal(i)
+				while (cabs(z) < 2 && i < a->mdlb->i_max)
+				{
+					z = z * z + c;
+					i++;
+				}
 				ppx((i == a->mdlb->i_max ? 0x0 : \
 							ft_rainbow(i * 1530 / a->mdlb->i_max)), \
 							x, y, a->mlx);
 			}
+	clock_gettime(CLOCK_REALTIME,&tms);
+	printf("time to render : %ld . %ld\n", tms.tv_sec - a->time, tms.tv_nsec - a->micro);
 }

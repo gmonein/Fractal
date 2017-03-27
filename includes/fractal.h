@@ -18,11 +18,16 @@
 #include "mlx.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <complex.h>
+#include <math.h>
+#include "time.h"
 
 #define WIN_X 1024
 #define WIN_Y 1024
 #define IMGF_X 1024
 #define IMGF_Y 1024
+#define IMGF_MX 512
+#define IMGF_MY 512
 #define WINDOWS_NAME "gmonein's fractal"
 
 typedef struct		s_cpx
@@ -55,10 +60,21 @@ typedef struct	s_mlx
 	int			**img;
 }				t_mlx;
 
+typedef struct s_point
+{
+	int		x;
+	int		y;
+}				t_point;
+
 typedef struct s_all
 {
 	t_mlx		*mlx;
 	t_fractal	*mdlb;
+	t_point		mouse;
+	double		zoom_i;
+	long long	time;
+	long long	micro;
+	int			frame;
 }				t_all;
 
 t_mlx			*make_mlx(void);
