@@ -6,7 +6,7 @@
 #    By: bsouchet <bsouchet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/04 18:49:05 by bsouchet          #+#    #+#              #
-#    Updated: 2017/03/26 21:56:03 by gmonein          ###   ########.fr        #
+#    Updated: 2017/03/28 19:28:09 by gmonein          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ C = clang
 
 NAME = fractal
 
-FLAGS = -O3
+FLAGS = -O3 -lpthread
 
 LIBFT = libft
 
