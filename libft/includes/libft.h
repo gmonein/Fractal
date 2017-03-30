@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/08 06:10:07 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/23 21:42:18 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/03/30 22:11:47 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct	s_list
 	void		*begin;
 }				t_list;
 
+int				ft_rand(int min, int max);
 void			ft_bzero(void *s, size_t n);
 void			ft_lstadd(t_list **alst, t_list *ne);
 void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));

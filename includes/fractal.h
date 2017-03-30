@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 16:11:05 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/30 18:32:00 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/03/30 23:35:45 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #define WIN_X 1024
 #define WIN_Y 1024
 #define IMGF_X 1024
-#define IMGF_Y 724
+#define IMGF_Y 824
 #define IMGF_MX 512
 #define IMGF_MY 512
 #define PI 3.14159265359
@@ -37,12 +37,17 @@ typedef _Complex double	D_COMPLEX;
 #define ID_JUL 2
 #define ID_PDLB 3
 #define ID_PJUL 4
+#define ID_NWTN 5
+#define ID_RSCE 6
 
 typedef struct	s_fr
 {
 	D_COMPLEX		c;
 	D_COMPLEX		z;
 	int				i;
+	D_COMPLEX		h;
+	D_COMPLEX		z0;
+	D_COMPLEX		dz;
 	double			smoothcolor;
 }				t_fr;
 
@@ -74,6 +79,8 @@ typedef struct		s_fractal
 	double			ci;
 	double			c;
 	double			pow;
+	double			der;
+	double			lim;
 }					t_fractal;
 
 typedef struct	s_mlx
@@ -98,8 +105,8 @@ typedef struct	s_o_thread
 
 typedef struct s_point
 {
-	int		x;
-	int		y;
+	int			x;
+	int			y;
 }				t_point;
 
 typedef struct s_all
@@ -109,6 +116,8 @@ typedef struct s_all
 	t_fractal	pdlb;
 	t_fractal	jul;
 	t_fractal	pjul;
+	t_fractal	nwtn;
+	t_fractal	rsce;
 	t_fractal	*act;
 	t_point		mouse;
 	void		(*frac)(struct s_all *, t_square, t_fr *);
@@ -120,11 +129,13 @@ typedef struct s_all
 
 	int			i_inc;
 	int			done;
-	int					redraw;
-	int					quit;
-	t_o_thread			**thread;
+	int			redraw;
+	int			quit;
+	int			block;
+	t_o_thread	**thread;
 }				t_all;
 
+int				ft_rand(int min, int max);
 t_mlx			*make_mlx(void);
 t_o_thread		**malloc_thread(int count);
 void			create_thread(t_all *a, t_o_thread **thread, int count);
@@ -139,6 +150,8 @@ void			redraw(t_all *a);
 void			fractal(t_all *a, t_square b);
 void			mandelbrot(t_all *a, t_square b, t_fr *v);
 void			julia(t_all *a, t_square b, t_fr *v);
+void			newton(t_all *a, t_square b, t_fr *v);
+void			rosace(t_all *a, t_square b, t_fr *v);
 void			powdelbrot(t_all *a, t_square b, t_fr *v);
 void			pow_julia(t_all *a, t_square b, t_fr *v);
 
