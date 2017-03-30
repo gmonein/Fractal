@@ -6,66 +6,11 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                               +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:52:47 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/28 22:36:26 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/03/30 18:37:18 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractal.h"
-
-void		*thread_fonc(void *b)
-{
-	t_all		*a;
-	t_o_thread	*t;
-
-	t = b;
-	a = t->all;
-	fractal(a, t->zone);
-	pthread_exit(NULL);
-}
-
-t_o_thread	**malloc_thread(int count)
-{
-	t_o_thread		**thread;
-
-	thread = (t_o_thread **)malloc(sizeof(t_o_thread *) * (count + 1));
-	thread[count] = NULL;
-	while (--count != -1)
-		thread[count] = (t_o_thread *)malloc(sizeof(t_o_thread));
-	return (thread);
-}
-
-void	create_thread(t_all *a, t_o_thread **thread, int count)
-{
-	int			x_inc;
-	int			x;
-	int			ret;
-
-	x_inc = IMGF_X / count;
-	x = 0;
-	while (--count != -1)
-	{
-		thread[count]->id = count;
-		thread[count]->all = a;
-		thread[count]->zone = (t_square){x, 0, x + x_inc, IMGF_Y};
-		ret = pthread_create(&thread[count]->thread, NULL, \
-								thread_fonc, thread[count]);
-		x += x_inc;
-	}
-}
-
-void	redraw(t_all *a)
-{
-	int		i;
-	void	*ret;
-
-	i = -1;
-	a->done = 0;
-	create_thread(a, a->thread, a->thread_cnt);
-	while (a->thread[++i])
-		pthread_join(a->thread[i]->thread, &ret);
-	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, 0, 0);
-	a->done = 1;
-}
 
 void	zoom(int x, int y, int i, t_all *a)
 {
@@ -74,30 +19,33 @@ void	zoom(int x, int y, int i, t_all *a)
 
 	dx = x;
 	dy = y;
-	dx *= (a->mdlb->zoom + i) / (a->mdlb->zoom);
-	dy *= (a->mdlb->zoom + i) / (a->mdlb->zoom);
-	a->mdlb->x1 += (((double)dx - (double)IMGF_MX) / (a->mdlb->zoom));
-	a->mdlb->x2 += (((double)dx - (double)IMGF_MX) / (a->mdlb->zoom));
-	a->mdlb->y1 += (((double)dy - (double)IMGF_MY) / (a->mdlb->zoom));
-	a->mdlb->y2 += (((double)dy - (double)IMGF_MY) / (a->mdlb->zoom));
-	a->mdlb->zoom += i;
-//	printf("x1 %lf y1 %lf\n",a->mdlb->x1, a->mdlb->y1);
+	dx *= (a->act->zoom + i) / (a->act->zoom);
+	dy *= (a->act->zoom + i) / (a->act->zoom);
+	a->act->x1 += (((double)dx - (double)IMGF_MX) / (a->act->zoom));
+	a->act->x2 += (((double)dx - (double)IMGF_MX) / (a->act->zoom));
+	a->act->y1 += (((double)dy - (double)IMGF_MY) / (a->act->zoom));
+	a->act->y2 += (((double)dy - (double)IMGF_MY) / (a->act->zoom));
+	a->act->zoom += i;
 }
 
 int		keyboard_hook(int keycode, t_all *a)
 {
-	if (keycode == K_E)
-		a->pow_i += 0.05;
+	if (keycode == K_X)
+		a->act->pow += 0.1;
 	else if (keycode == K_Z)
+		a->act->pow -= 0.1;
+	else if (keycode == K_C)
 	{
 		a->i_inc += 10;
 		if (a->i_inc > 1530)
 			a->i_inc = 0;
 	}
 	else if (keycode == K_I)
-		a->mdlb->i_max++;
+		a->act->i_max++;
 	else if (keycode == K_O)
-		a->mdlb->i_max--;
+		a->act->i_max--;
+	else if (keycode == K_S)
+		return (0);
 	redraw(a);
 	return (0);
 }
@@ -107,9 +55,17 @@ int		mouse_pos(int x, int y, t_all *a)
 	int		i;
 	if (x > 0 && y > 0 && x < IMGF_X && y < IMGF_Y && a->done == 1)
 	{
-		a->mdlb->ci = (double)((double)y - IMGF_Y / 2) / 380;
-		a->mdlb->c = (double)((double)x - IMGF_X / 2) / 760;
-	//	a->mdlb->pow = (double)((double)x / 10 + 20) / 10;
+		if (a->act->id == ID_JUL || a->act->id == ID_PJUL)
+		{
+			a->act->ci = (double)((double)y - IMGF_Y / 2) / 380;
+			a->act->c = (double)((double)x - IMGF_X / 2) / 760;
+		}
+		else if (a->act->id == ID_PDLB)
+		{
+			a->act->pow = (double)((double)(x + y - 50) / 10 + 20) / 10;
+		}
+		else
+			return (0);
 		redraw(a);
 	}
 	return (0);
@@ -132,7 +88,6 @@ int		loop_hook(t_all *a)
 int			main(int argc, char **argv)
 {
 	t_all		a;
-	t_fractal	mdlb;
 
 	int			zoom;
 	void		(*frac)(struct s_all *, t_square);
@@ -142,16 +97,28 @@ int			main(int argc, char **argv)
 	a.thread = malloc_thread(a.thread_cnt);
 	zoom = IMGF_X / 4.2;
 	a.zoom_i = 10;
-	mdlb = (t_fractal){-2.1, 0.0, -1.2, 1.2, zoom, 50, \
+	a.mdlb = (t_fractal){ ID_MDLB, -2.1, 0.0, -1.2, 1.2, zoom, 50, \
 					(0.6 + 2.1) * zoom, (1.2 + 1.2) * zoom};
+	a.pdlb = (t_fractal){ ID_PDLB, -2.1, 0.0, -1.2, 1.2, zoom, 50, \
+					(0.6 + 2.1) * zoom, (1.2 + 1.2) * zoom, 0, 0, 1.0f};
+	a.jul = (t_fractal){ ID_JUL,-2.1, 0.0, -1.2, 1.2, zoom, 50, \
+					(0.6 + 2.1) * zoom, (1.2 + 1.2) * zoom, 0, 0};
+	a.pjul = (t_fractal){ ID_PJUL,-2.1, 0.0, -1.2, 1.2, zoom, 50, \
+					(0.6 + 2.1) * zoom, (1.2 + 1.2) * zoom, 0, 0, 3.0f};
 	a.quit = 0;
-	a.mdlb = &mdlb;
 	a.mlx = make_mlx();
-	a.frac = (void *)mandelbrot;
-	//a.frac = (void *)julia;
+//	a.frac = (void *)mandelbrot;
+//	a.act = &a.mdlb;
+//	a.frac = (void *)julia;
+//	a.act = &a.jul;
+	a.frac = (void *)powdelbrot;
+	a.act = &a.pdlb;
+//	a.frac = (void *)pow_julia;
+//	a.act = &a.pjul;
 	mlx_hook(a.mlx->win, 2, (1L << 0), keyboard_hook, &a);
 	mlx_hook(a.mlx->win, 6, (1L << 6), mouse_pos, &a);
 	mlx_loop_hook(a.mlx->mlx, loop_hook, &a);
 	mlx_mouse_hook(a.mlx->win, mouse_clic, &a);
+	redraw(&a);
 	return (mlx_loop(a.mlx->mlx));
 }
