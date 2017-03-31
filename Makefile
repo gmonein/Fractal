@@ -6,7 +6,7 @@
 #    By: bsouchet <bsouchet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/04 18:49:05 by bsouchet          #+#    #+#              #
-#    Updated: 2017/03/30 22:15:54 by gmonein          ###   ########.fr        #
+#    Updated: 2017/03/31 15:27:33 by gmonein          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SOURCES = fractal.c \
 		  misc.c \
 		  mouse_hook.c \
 		  thread.c \
+		  mini_frac.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 

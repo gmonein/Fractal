@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:57:11 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/28 16:00:30 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/03/31 14:31:12 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,34 @@ t_mlx		*make_mlx(void)
 	mlx->addr = mlx_get_data_addr(mlx->image, &mlx->bpp, &mlx->line_size,
 																&mlx->edian);
 	mlx->img = make_addr(mlx);
+	return (mlx);
+}
+
+static int			**make_m_addr(t_mlx *mlx)
+{
+	int		**img;
+	int		i;
+	int		steps;
+
+	i = 0;
+	steps = M_IMGF_Y;
+	img = (int **)malloc(sizeof(int *) * (M_IMGF_Y + 1));
+	img[0] = (int *)mlx->addr;
+	while (++i < steps)
+		img[i] = (int *)&mlx->addr[i * M_IMGF_X * 4];
+	img[i] = NULL;
+	return (img);
+}
+
+t_mlx		make_mini_mlx(t_all *a)
+{
+	t_mlx		mlx;
+
+	mlx.mlx = a->mlx->mlx;
+	mlx.win = a->mlx->win;
+	mlx.image = mlx_new_image(mlx.mlx, M_IMGF_X, M_IMGF_Y);
+	mlx.addr = mlx_get_data_addr(mlx.image, &mlx.bpp, &mlx.line_size,
+																&mlx.edian);
+	mlx.img = make_m_addr(&mlx);
 	return (mlx);
 }

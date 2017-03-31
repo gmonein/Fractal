@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:56:07 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/30 23:28:56 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/03/31 18:16:30 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void		mandelbrot(t_all *a, t_square b, t_fr *v)
 {
 	v->z = 0;
 	v->i = 0;
-	v->c = b.x1 / a->mdlb.zoom + a->mdlb.x1 +\
-		(b.y1 / a->mdlb.zoom + a->mdlb.y1) * I;
+	v->c = b.x1 / a->act->zoom + a->act->x1 +\
+		(b.y1 / a->act->zoom + a->act->y1) * I;
 	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->mdlb.i_max);
 	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 4 \
 												&& v->i < a->mdlb.i_max)
@@ -49,9 +49,9 @@ void		julia(t_all *a, t_square b, t_fr *v)
 {
 	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->jul.i_max);
 	v->i = 0;
-	v->z = b.x1 / a->jul.zoom + a->jul.x1 +\
-		(b.y1 / a->jul.zoom + a->jul.y1) * I;
-	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 4\
+	v->z = b.x1 / a->act->zoom + a->act->x1 +\
+		(b.y1 / a->act->zoom + a->act->y1) * I;
+	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 16\
 											&& v->i < a->jul.i_max)
 	{
 		v->z = v->z * v->z + v->c;
@@ -67,8 +67,8 @@ void		powdelbrot(t_all *a, t_square b, t_fr *v)
 {
 	v->z = 0;
 	v->i = 0;
-	v->c = b.x1 / a->pdlb.zoom + a->pdlb.x1 +\
-		(b.y1 / a->pdlb.zoom + a->pdlb.y1) * I;
+	v->c = b.x1 / a->act->zoom + a->act->x1 +\
+		(b.y1 / a->act->zoom + a->act->y1) * I;
 	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->pdlb.i_max);
 	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 4 \
 												&& v->i < a->pdlb.i_max)
@@ -86,12 +86,12 @@ void		pow_julia(t_all *a, t_square b, t_fr *v)
 {
 	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->pjul.i_max);
 	v->i = 0;
-	v->z = b.x1 / a->pjul.zoom + a->pjul.x1 +\
-		(b.y1 / a->pjul.zoom + a->pjul.y1) * I;
+	v->z = b.x1 / a->act->zoom + a->act->x1 +\
+		(b.y1 / a->act->zoom + a->act->y1) * I;
 	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 4\
 											&& v->i < a->pjul.i_max)
 	{
-		v->z = cpow(v->z, a->pjul.pow) + v->c;
+		v->z = cpow(v->z, a->act->pow) + v->c;
 		v->i++;
 		v->smoothcolor += (a->smooth == 1 ? exp(-cabs(v->z)) : 0);
 	}
@@ -112,7 +112,7 @@ void		newton(t_all *a, t_square b, t_fr *v)
 	v->i = 0;
 	v->z = b.x1 / a->nwtn.zoom + a->nwtn.x1 +\
 		(b.y1 / a->nwtn.zoom + a->nwtn.y1) * I;
-	while (v->i < a->nwtn.i_max && creal(v->z) < 4)
+	while (v->i < a->nwtn.i_max)
 	{
 		v->dz = (fn(v->z + v->h) - fn(v->z)) / v->h;
 		v->z0 = v->z - fn(v->z) / v->dz;

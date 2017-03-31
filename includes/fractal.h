@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 16:11:05 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/30 23:35:45 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/03/31 18:01:09 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@
 #include <pthread.h>
 
 #define WIN_X 1024
-#define WIN_Y 1024
+#define WIN_Y 924
 #define IMGF_X 1024
-#define IMGF_Y 824
+#define IMGF_Y 724
+#define M_IMGF_X 256
+#define M_IMGF_Y 100
 #define IMGF_MX 512
 #define IMGF_MY 512
 #define PI 3.14159265359
@@ -112,12 +114,14 @@ typedef struct s_point
 typedef struct s_all
 {
 	t_mlx		*mlx;
+	t_mlx		mini_mlx;
 	t_fractal	mdlb;
 	t_fractal	pdlb;
 	t_fractal	jul;
 	t_fractal	pjul;
 	t_fractal	nwtn;
 	t_fractal	rsce;
+	t_fractal	other;
 	t_fractal	*act;
 	t_point		mouse;
 	void		(*frac)(struct s_all *, t_square, t_fr *);
@@ -154,5 +158,7 @@ void			newton(t_all *a, t_square b, t_fr *v);
 void			rosace(t_all *a, t_square b, t_fr *v);
 void			powdelbrot(t_all *a, t_square b, t_fr *v);
 void			pow_julia(t_all *a, t_square b, t_fr *v);
+t_mlx			make_mini_mlx(t_all *a);
+void			print_mini_frac(t_all *a);
 
 #endif
