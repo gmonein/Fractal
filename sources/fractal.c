@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:56:07 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/31 18:16:30 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/01 01:34:35 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,35 +32,60 @@ void		mandelbrot(t_all *a, t_square b, t_fr *v)
 	v->i = 0;
 	v->c = b.x1 / a->act->zoom + a->act->x1 +\
 		(b.y1 / a->act->zoom + a->act->y1) * I;
-	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->mdlb.i_max);
-	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 4 \
+	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 1 << 8
 												&& v->i < a->mdlb.i_max)
 	{
 		v->z = v->z * v->z + v->c;
 		v->i++;
-		v->smoothcolor += (a->smooth == 1 ? exp(-cabs(v->z)) : 0);
 	}
-	ppx(v->i == a->mdlb.i_max ? 0x0\
-		: ft_rainbow((int)((v->i * (v->smoothcolor / a->mdlb.i_max) \
-					+ a->i_inc) * 30) % 1530), b.x1, b.y1, a->mlx);
+	ppx(v->i == a->mdlb.i_max ? 0x0 : get_color(a, v, a->act->i_max)
+												, b.x1, b.y1, a->mlx);
 }
 
 void		julia(t_all *a, t_square b, t_fr *v)
 {
-	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->jul.i_max);
 	v->i = 0;
 	v->z = b.x1 / a->act->zoom + a->act->x1 +\
 		(b.y1 / a->act->zoom + a->act->y1) * I;
-	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 16\
+	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 16
 											&& v->i < a->jul.i_max)
 	{
 		v->z = v->z * v->z + v->c;
 		v->i++;
-		v->smoothcolor += (a->smooth == 1 ? exp(-cabs(v->z)) : 0);
 	}
-	ppx(v->i == a->jul.i_max ? 0x0\
-			: ft_rainbow((int)((v->i * (v->smoothcolor / a->jul.i_max) \
-						+ a->i_inc) * 30) % 1530), b.x1, b.y1, a->mlx);
+	ppx(v->i == a->act->i_max ? 0x0 : get_color(a, v, a->act->i_max)
+											, b.x1, b.y1, a->mlx);
+}
+
+void		turtle(t_all *a, t_square b, t_fr *v)
+{
+	v->i = 0;
+	v->z = b.x1 / a->act->zoom + a->act->x1 +\
+		(b.y1 / a->act->zoom + a->act->y1) * I;
+	while (cimag(v->z) * cimag(v->z) < 10
+											&& v->i < a->jul.i_max)
+	{
+		v->z = v->z * v->z * v->z * v->z * v->z + v->c;
+		v->i++;
+	}
+	ppx(v->i == a->mdlb.i_max ? 0x0 : get_color(a, v, a->act->i_max)
+												, b.x1, b.y1, a->mlx);
+}
+
+void		jul_new(t_all *a, t_square b, t_fr *v)
+{
+	v->i = 0;
+	v->z = b.x1 / a->act->zoom + a->act->x1 +\
+		(b.y1 / a->act->zoom + a->act->y1) * I;
+	while (cimag(v->z) * cimag(v->z) + creal(v->z) * creal(v->z) < 4
+											&& v->i < a->jul.i_max)
+	{
+		v->z = cpow((v->z * v->z - v->z), 2) + cpow(v->z + v->c, 3);
+		v->i++;
+	}
+	
+	ppx(v->i == a->mdlb.i_max ? 0x0 : get_color(a, v, a->act->i_max)
+												, b.x1, b.y1, a->mlx);
 }
 
 void		powdelbrot(t_all *a, t_square b, t_fr *v)
@@ -69,35 +94,29 @@ void		powdelbrot(t_all *a, t_square b, t_fr *v)
 	v->i = 0;
 	v->c = b.x1 / a->act->zoom + a->act->x1 +\
 		(b.y1 / a->act->zoom + a->act->y1) * I;
-	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->pdlb.i_max);
-	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 4 \
+	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 16 \
 												&& v->i < a->pdlb.i_max)
 	{
 		v->z = cpow(v->z, a->pdlb.pow) + v->c;
 		v->i++;
-		v->smoothcolor += (a->smooth == 1 ? exp(-cabs(v->z)) : 0);
 	}
-	ppx(v->i == a->pdlb.i_max ? 0x0\
-		: ft_rainbow((int)((v->i * (v->smoothcolor / a->pdlb.i_max) \
-					+ a->i_inc) * 30) % 1530), b.x1, b.y1, a->mlx);
+	ppx(v->i == a->mdlb.i_max ? 0x0 : get_color(a, v, a->act->i_max)
+												, b.x1, b.y1, a->mlx);
 }
 
 void		pow_julia(t_all *a, t_square b, t_fr *v)
 {
-	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->pjul.i_max);
 	v->i = 0;
 	v->z = b.x1 / a->act->zoom + a->act->x1 +\
 		(b.y1 / a->act->zoom + a->act->y1) * I;
-	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 4\
+	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 16\
 											&& v->i < a->pjul.i_max)
 	{
 		v->z = cpow(v->z, a->act->pow) + v->c;
 		v->i++;
-		v->smoothcolor += (a->smooth == 1 ? exp(-cabs(v->z)) : 0);
 	}
-	ppx(v->i == a->pjul.i_max ? 0x0\
-			: ft_rainbow((int)((v->i * (v->smoothcolor / a->pjul.i_max) \
-						+ a->i_inc) * 30) % 1530), b.x1, b.y1, a->mlx);
+	ppx(v->i == a->mdlb.i_max ? 0x0 : get_color(a, v, a->act->i_max)
+												, b.x1, b.y1, a->mlx);
 }
 
 D_COMPLEX	fn(D_COMPLEX z)
@@ -108,10 +127,9 @@ D_COMPLEX	fn(D_COMPLEX z)
 void		newton(t_all *a, t_square b, t_fr *v)
 {
 	v->h = a->nwtn.der + a->nwtn.der * I;
-	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->nwtn.i_max);
 	v->i = 0;
-	v->z = b.x1 / a->nwtn.zoom + a->nwtn.x1 +\
-		(b.y1 / a->nwtn.zoom + a->nwtn.y1) * I;
+	v->z = b.x1 / a->act->zoom + a->act->x1 +\
+		(b.y1 / a->act->zoom + a->act->y1) * I;
 	while (v->i < a->nwtn.i_max)
 	{
 		v->dz = (fn(v->z + v->h) - fn(v->z)) / v->h;
@@ -119,18 +137,15 @@ void		newton(t_all *a, t_square b, t_fr *v)
 		v->i++;
 		if (cabs(v->z0 - v->z) < a->nwtn.lim)
 			break;
-		v->smoothcolor += (a->smooth == 1 ? exp(-cabs(v->z)) : 0);
 		v->z = v->z0;
 	}
-	ppx(v->i == a->nwtn.i_max ? 0x0\
-			: ft_rainbow((int)((v->i * (v->smoothcolor / a->nwtn.i_max) \
-						+ a->i_inc) * 30) % 1530), b.x1, b.y1, a->mlx);
+	ppx(v->i == a->act->i_max ? 0x0\
+		: ft_rainbow((int)(v->i * 1530 / a->act->i_max)), b.x1, b.y1, a->mlx);
 }
 
 void		rosace(t_all *a, t_square b, t_fr *v)
 {
 	v->h = a->act->der + a->act->der * I;
-	v->smoothcolor = (a->smooth == 1 ? exp(-fabs(creal(v->z))) : a->act->i_max);
 	v->i = 0;
 	v->z = b.x1 / a->act->zoom + a->act->x1 +\
 		(b.y1 / a->act->zoom + a->act->y1) * I;
@@ -142,10 +157,8 @@ void		rosace(t_all *a, t_square b, t_fr *v)
 		v->i++;
 		if (cabs(v->z0 - v->z) < a->act->lim)
 			break;
-		v->smoothcolor += (a->smooth == 1 ? exp(-cabs(v->z)) : 0);
 		v->z = v->z0 * v->z0;
 	}
 	ppx(v->i == a->act->i_max ? 0x0\
-			: ft_rainbow((int)((v->i * (v->smoothcolor / a->act->i_max) \
-						+ a->i_inc) * 30) % 1530), b.x1, b.y1, a->mlx);
+		: ft_rainbow((int)(v->i * 1530 / a->act->i_max)), b.x1, b.y1, a->mlx);
 }

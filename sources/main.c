@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                               +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:52:47 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/31 18:22:02 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/01 01:39:47 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int		keyboard_hook(int keycode, t_all *a)
 		a->act->pow += 0.1;
 	if (keycode == K_P)
 		a->block = 1;
+	if (keycode == K_L)
+		a->pal = (a->pal == 3 ? 0 : a->pal + 1);
 	else if (keycode == K_Z)
 		a->act->pow -= 0.1;
 	else if (keycode == K_C)
@@ -105,12 +107,54 @@ void			init_fractal(t_all *a, int zoom)
 	a->rsce = (t_fractal){ ID_RSCE , -2.7, 1.0f, -2.1f, 1.0f, zoom * 0.8, 20, \
 					(2.1f) * zoom, (2.0f) * zoom, 0, 0, 0,\
 					0.000001f, 0.001f};
+	a->trtl = (t_fractal){ ID_JUL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 50, \
+					(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0};
+	a->jlnw = (t_fractal){ ID_JUL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 50, \
+					(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0};
 }
+
+static void	init_colors(t_all *a)
+{
+	a->colors[0][0] = 0x7F1637;
+	a->colors[0][1] = 0x047878;
+	a->colors[0][2] = 0xFFB733;
+	a->colors[0][3] = 0xF57336;
+	a->colors[0][4] = 0xC22121;
+	a->colors[0][5] = 0x7F1637;
+	a->colors[1][0] = 0xFF0000;
+	a->colors[1][1] = 0xFFFF00;
+	a->colors[1][2] = 0x00FF00;
+	a->colors[1][3] = 0x00FFFF;
+	a->colors[1][4] = 0x0000FF;
+	a->colors[1][5] = 0xFF00FF;
+	a->colors[2][0] = 0x2E4600;
+	a->colors[2][1] = 0x486B00;
+	a->colors[2][2] = 0xA2C523;
+	a->colors[2][3] = 0x7D4427;
+	a->colors[2][4] = 0xA2C523;
+	a->colors[2][5] = 0x486B00;
+	a->colors[3][0] = 0xD4D4D4;
+	a->colors[3][1] = 0x8C8C8C;
+	a->colors[3][2] = 0x666666;
+	a->colors[3][3] = 0x3D3D3D;
+	a->colors[3][4] = 0x666666;
+	a->colors[3][5] = 0x8C8C8C;
+}
+
+typedef struct lol
+{
+	int		a;
+int			b;
+int			c;
+int			d;
+}				t_lol;
 
 int			main(int argc, char **argv)
 {
 	t_all		a;
 
+	init_colors(&a);
+	a.pal = 2;
 	a.pow_i = 1;
 	a.frame = 0;
 //	a.smooth = 1;
@@ -122,16 +166,20 @@ int			main(int argc, char **argv)
 	init_fractal(&a, IMGF_X / 4.2);
 	a.frac = (void *)mandelbrot;
 	a.act = &a.mdlb;
-	a.frac = (void *)julia;
-	a.act = &a.jul;
+//	a.frac = (void *)julia;
+//	a.act = &a.jul;
 //	a.frac = (void *)powdelbrot;
 //	a.act = &a.pdlb;
 //	a.frac = (void *)pow_julia;
 //	a.act = &a.pjul;
-	a.frac = (void *)newton;
-	a.act = &a.nwtn;
+//	a.frac = (void *)newton;
+//	a.act = &a.nwtn;
 //	a.frac = (void *)rosace;
 //	a.act = &a.rsce;
+//	a.frac = (void *)turtle;
+//	a.act = &a.trtl;
+//	a.frac = (void *)jul_new;
+//	a.act = &a.jlnw;
 	mlx_hook(a.mlx->win, 2, (1L << 0), keyboard_hook, &a);
 	mlx_hook(a.mlx->win, 6, (1L << 6), mouse_pos, &a);
 	mlx_loop_hook(a.mlx->mlx, loop_hook, &a);

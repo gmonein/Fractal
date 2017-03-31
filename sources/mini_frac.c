@@ -6,40 +6,61 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/31 15:26:04 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/31 18:22:37 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/01 01:02:02 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fractal.h>
 
+static void		mini_frac_4(t_all *a, double zoom, t_square b, double pow)
+{
+	a->frac = (void *)jul_new;
+	a->other = (t_fractal){ ID_JUL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 50,
+					(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0};
+	a->other.c = a->c;
+	a->other.ci = a->ci;
+	fractal(a, b);
+	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image,
+			M_IMGF_X * 3, IMGF_Y + 100);
+}
+
 static void		mini_frac_3(t_all *a, double zoom, t_square b, double pow)
 {
 	a->frac = (void *)rosace;
-	a->other = (t_fractal){ ID_RSCE , -2.7, 1.0f, -0.85f, 1.0f, zoom * 0.8, 20, \
+	a->other = (t_fractal){ ID_RSCE , -2.7, 1.0f, -0.85f, 1.0f, zoom * 0.8, 20,
 					(2.1f) * zoom, (2.0f) * zoom, 0, 0, 0,\
 					0.000001f, 0.001f};
 	fractal(a, b);
-	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, \
-			M_IMGF_X * 2, IMGF_Y + 100);
+	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image,
+			M_IMGF_X , IMGF_Y + 100);
 	a->frac = (void *)newton;
-	a->other = (t_fractal){ ID_NWTN ,-1.9f, 1.1f, 1.9f, 0.8f, zoom, 20, \
-					(2.0f) * zoom, (2.0f) * zoom, 0, 0, 0,\
+	a->other = (t_fractal){ ID_NWTN , -3.0f, 1.0f, -1.0f, 1.7f, zoom, 20,
+					(2.0f) * zoom, (2.0f) * zoom, 0, 0, 0,
 					0.000001f, 0.001f};
 	fractal(a, b);
-	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, \
-			M_IMGF_X * 2, IMGF_Y);
+	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image,
+			M_IMGF_X, IMGF_Y);
+	a->frac = (void *)turtle;
+	a->other = (t_fractal){ ID_JUL, -2.1f, 0.0f, -0.9f, 1.2f, zoom, 50,
+					(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0};
+	a->other.c = a->c;
+	a->other.ci = a->ci;
+	fractal(a, b);
+	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image,
+			M_IMGF_X * 3, IMGF_Y);
+	mini_frac_4(a, zoom, b, pow);
 }
 
 static void		mini_frac_2(t_all *a, double zoom, t_square b, double pow)
 {
 	a->frac = (void *)powdelbrot;
-	a->other = (t_fractal){ ID_PDLB, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 50, \
+	a->other = (t_fractal){ ID_PDLB, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 50,
 					(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, pow};
 	fractal(a, b);
-	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, \
+	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image,
 			0, IMGF_Y + 100);
 	a->frac = (void *)mandelbrot;
-	a->other = (t_fractal){ ID_MDLB, -2.4f, 0.0f, -0.85f, 1.2f, zoom, 50, \
+	a->other = (t_fractal){ ID_MDLB, -2.4f, 0.0f, -0.85f, 1.2f, zoom, 50,
 					(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom};
 	fractal(a, b);
 	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, 0, IMGF_Y);
@@ -48,30 +69,27 @@ static void		mini_frac_2(t_all *a, double zoom, t_square b, double pow)
 
 static void		mini_frac_1(t_all *a, double zoom, t_square b, double pow)
 {
-	double		c;
-	double		ci;
-
 	pow = (pow == 1 || pow == 0 ? 3 : pow);
-	c = (a->act->c == 0 ? -0.5f : a->act->c);
-	ci = (a->act->ci == 0 ? 0.7f : a->act->ci);
+	a->c = (a->act->c == 0 ? -0.5f : a->act->c);
+	a->ci = (a->act->ci == 0 ? 0.7f : a->act->ci);
 	a->act = &a->other;
 	a->mlx = &a->mini_mlx;
 	a->frac = (void *)julia;
 	a->other = (t_fractal){ ID_JUL, -2.1f, 0.0f, -0.85f, 1.2f, zoom, 50, \
-					(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0};
-	a->other.c = c;
-	a->other.ci = ci;
+					(0.6f + 2.1f) * zoom, (2.4f) * zoom, 0, 0};
+	a->other.c = a->c;
+	a->other.ci = a->ci;
 	fractal(a, b);
 	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, \
-			a->mlx->image, IMGF_X / 4, IMGF_Y);
+			a->mlx->image, M_IMGF_X * 2, IMGF_Y);
 	a->frac = (void *)pow_julia;
 	a->other = (t_fractal){ ID_PJUL,-2.1, 0.0, -0.85f, 1.2, zoom, 50, \
-					(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, pow};
-	a->other.c = c;
-	a->other.ci = ci;
+					(0.6f + 2.1f) * zoom, (2.4f) * zoom, 0, 0, pow};
+	a->other.c = a->c;
+	a->other.ci = a->ci;
 	fractal(a, b);
 	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, \
-			M_IMGF_X, IMGF_Y + 100);
+			M_IMGF_X * 2, IMGF_Y + 100);
 	mini_frac_2(a, zoom, b, pow);
 }
 

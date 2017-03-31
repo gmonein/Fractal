@@ -6,7 +6,7 @@
 #    By: gmonein <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/08 06:09:56 by gmonein           #+#    #+#              #
-#    Updated: 2017/03/30 21:55:56 by gmonein          ###   ########.fr        #
+#    Updated: 2017/03/31 19:19:03 by gmonein          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ NAME = libft.a
 HEADER = includes
 
 SRC = ft_atoi.c \
+	ft_color.c \
 	ft_rand.c \
 	ft_bzero.c \
 	ft_double_sign.c \

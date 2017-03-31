@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 16:11:05 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/31 18:01:09 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/01 01:37:25 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ typedef struct	s_fr
 {
 	D_COMPLEX		c;
 	D_COMPLEX		z;
-	int				i;
+	double			i;
+	double			bi;
 	D_COMPLEX		h;
 	D_COMPLEX		z0;
 	D_COMPLEX		dz;
@@ -121,24 +122,32 @@ typedef struct s_all
 	t_fractal	pjul;
 	t_fractal	nwtn;
 	t_fractal	rsce;
+	t_fractal	trtl;
+	t_fractal	jlnw;
 	t_fractal	other;
 	t_fractal	*act;
 	t_point		mouse;
+	int			colors[4][16];
 	void		(*frac)(struct s_all *, t_square, t_fr *);
 	double		zoom_i;
+	int			pal;
 	int			smooth;
 	int			frame;
 	int			thread_cnt;
 	float		pow_i;
 
-	int			i_inc;
+	double		i_inc;
 	int			done;
 	int			redraw;
 	int			quit;
 	int			block;
+	double		c;
+	double		ci;
 	t_o_thread	**thread;
 }				t_all;
 
+int				ft_gt_colors(int clr1, int clr2, double val);
+int				get_color(t_all *a, t_fr *t, int i_max);
 int				ft_rand(int min, int max);
 t_mlx			*make_mlx(void);
 t_o_thread		**malloc_thread(int count);
@@ -158,7 +167,10 @@ void			newton(t_all *a, t_square b, t_fr *v);
 void			rosace(t_all *a, t_square b, t_fr *v);
 void			powdelbrot(t_all *a, t_square b, t_fr *v);
 void			pow_julia(t_all *a, t_square b, t_fr *v);
+void			turtle(t_all *a, t_square b, t_fr *v);
+void			jul_new(t_all *a, t_square b, t_fr *v);
 t_mlx			make_mini_mlx(t_all *a);
 void			print_mini_frac(t_all *a);
+int				get_newton_color(t_all *a,t_fr *t, int i_max);
 
 #endif

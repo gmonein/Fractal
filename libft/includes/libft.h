@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/08 06:10:07 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/30 22:11:47 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/03/31 19:35:18 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <math.h>
 # include "get_next_line.h"
 
 # define BUF_SIZE 20
@@ -31,6 +32,7 @@ typedef struct	s_list
 	void		*begin;
 }				t_list;
 
+int				ft_gt_colors(int clr1, int clr2, double val);
 int				ft_rand(int min, int max);
 void			ft_bzero(void *s, size_t n);
 void			ft_lstadd(t_list **alst, t_list *ne);
