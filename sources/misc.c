@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:56:54 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/31 19:45:34 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/01 20:51:25 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,17 @@ t_cpx		cpx_add(t_cpx a, t_cpx b)
 	return (res);
 }
 
+int		ft_pal(double i, double i_max, int *pal, int p_max)
+{
+	return (pal[(int)(i * p_max / i_max)]);
+}
+
 int		ft_rainbow(int i)
 {
 	int		r;
 	int		g;
 	int		b;
-/*
-	r = 255 * (double)sin(i * 2 * PI / 1530);
-	g = 255 * (double)sin((i + 255) * 2 * PI / 1530);
-	b = 255 * (double)sin((i + 510) * 2 * PI / 1530);
-	r = (r >= 0 ? r : 0);
-	g = (g >= 0 ? g : 0);
-	b = (b >= 0 ? b : 0);
-*/
+
 	i %= 1530;
 	r = (i >= 0 ? 0xFF : 0);
 	r = (i >= 255 ? 510 - i : r);

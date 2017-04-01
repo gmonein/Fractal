@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 16:11:05 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/01 01:37:25 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/02 01:08:37 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "time.h"
 #include <pthread.h>
 
+#define DIVLOG 1.44269504088896338700465094007086008787155151367187500000000000
 #define WIN_X 1024
 #define WIN_Y 924
 #define IMGF_X 1024
@@ -33,24 +34,35 @@
 #define IMGF_MY 512
 #define PI 3.14159265359
 #define WINDOWS_NAME "gmonein's fractal"
-typedef _Complex double	D_COMPLEX;
+#define N_MDLB "Mandelbrot"
+#define N_PDLB "Powdelbrot"
+#define N_JUL "Julia"
+#define N_PJUL "Powlia"
+#define N_NWTN "Newton"
+#define N_RSCE "Rosace"
+#define N_TRTL "Turtle"
+#define N_ISLD "Island"
+typedef unsigned long long	t_ullong;
+typedef _Complex double	t_complex;
 
 #define ID_MDLB 1
-#define ID_JUL 2
-#define ID_PDLB 3
+#define ID_PDLB 2
+#define ID_JUL 3
 #define ID_PJUL 4
 #define ID_NWTN 5
 #define ID_RSCE 6
+#define ID_TRTL 7
+#define ID_ISLD 8
 
 typedef struct	s_fr
 {
-	D_COMPLEX		c;
-	D_COMPLEX		z;
+	t_complex		c;
+	t_complex		z;
 	double			i;
 	double			bi;
-	D_COMPLEX		h;
-	D_COMPLEX		z0;
-	D_COMPLEX		dz;
+	t_complex		h;
+	t_complex		z0;
+	t_complex		dz;
 	double			smoothcolor;
 }				t_fr;
 
@@ -84,6 +96,7 @@ typedef struct		s_fractal
 	double			pow;
 	double			der;
 	double			lim;
+	t_ullong		zoom_i;
 }					t_fractal;
 
 typedef struct	s_mlx
@@ -127,25 +140,28 @@ typedef struct s_all
 	t_fractal	other;
 	t_fractal	*act;
 	t_point		mouse;
+	int			keycode;
+	int			mrdw;
 	int			colors[4][16];
 	void		(*frac)(struct s_all *, t_square, t_fr *);
-	double		zoom_i;
 	int			pal;
+	int			p_max;
 	int			smooth;
-	int			frame;
 	int			thread_cnt;
 	float		pow_i;
 
 	double		i_inc;
 	int			done;
 	int			redraw;
-	int			quit;
 	int			block;
 	double		c;
 	double		ci;
 	t_o_thread	**thread;
 }				t_all;
 
+void			ft_putstr_fd(const char *str, int fd);
+int				ft_strcmp(const char *s1, const char *s2);
+int				ft_pal(double i, double i_max, int *pal, int p_max);
 int				ft_gt_colors(int clr1, int clr2, double val);
 int				get_color(t_all *a, t_fr *t, int i_max);
 int				ft_rand(int min, int max);
@@ -171,6 +187,7 @@ void			turtle(t_all *a, t_square b, t_fr *v);
 void			jul_new(t_all *a, t_square b, t_fr *v);
 t_mlx			make_mini_mlx(t_all *a);
 void			print_mini_frac(t_all *a);
-int				get_newton_color(t_all *a,t_fr *t, int i_max);
+void			zoom_in(int x, int y, int i, t_all *a);
+void			zoom_out(int x, int y, int i, t_all *a);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 15:32:27 by gmonein           #+#    #+#             */
-/*   Updated: 2017/03/31 18:11:31 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/02 01:16:13 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	redraw(t_all *a)
 	while (a->thread[++i])
 		pthread_join(a->thread[i]->thread, &ret);
 	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, 0, 0);
-	print_mini_frac(a);
+	if (a->mrdw == 1 || a->keycode == K_A)
+		print_mini_frac(a);
+	a->keycode = -1;
 	a->done = 1;
 }
