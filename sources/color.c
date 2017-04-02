@@ -6,13 +6,13 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/31 19:13:44 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/01 23:14:23 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/02 02:11:02 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractal.h"
 
-int			get_color(t_all *a,t_fr *t, int i_max)
+int			get_color(t_all *a, t_fr *t)
 {
 	t->i += 1.0f -
 	log((log(creal(t->z) * creal(t->z) + cimag(t->z) * cimag(t->z)) * 0.50f)

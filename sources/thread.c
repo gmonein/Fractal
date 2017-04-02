@@ -6,13 +6,13 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 15:32:27 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/02 01:16:13 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/02 03:02:21 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractal.h"
 
-t_o_thread		**malloc_thread(int count)
+t_o_thread			**malloc_thread(int count)
 {
 	t_o_thread		**thread;
 
@@ -23,7 +23,7 @@ t_o_thread		**malloc_thread(int count)
 	return (thread);
 }
 
-void			*thread_fonc(void *b)
+static void			*thread_fonc(void *b)
 {
 	t_all		*a;
 	t_o_thread	*t;
@@ -34,7 +34,7 @@ void			*thread_fonc(void *b)
 	pthread_exit(NULL);
 }
 
-void		create_thread(t_all *a, t_o_thread **thread, int count)
+static void			create_thread(t_all *a, t_o_thread **thread, int count)
 {
 	int			x_inc;
 	int			x;
@@ -53,7 +53,7 @@ void		create_thread(t_all *a, t_o_thread **thread, int count)
 	}
 }
 
-void	redraw(t_all *a)
+void				redraw(t_all *a)
 {
 	int		i;
 	void	*ret;

@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:56:54 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/01 20:51:25 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/02 02:02:03 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,9 @@ t_cpx		cpx_add(t_cpx a, t_cpx b)
 	return (res);
 }
 
-int		ft_pal(double i, double i_max, int *pal, int p_max)
+int			ft_pal(double i, double i_max, int *pal, int p_max)
 {
 	return (pal[(int)(i * p_max / i_max)]);
-}
-
-int		ft_rainbow(int i)
-{
-	int		r;
-	int		g;
-	int		b;
-
-	i %= 1530;
-	r = (i >= 0 ? 0xFF : 0);
-	r = (i >= 255 ? 510 - i : r);
-	r = (i >= 510 ? 0 : r);
-	r = (i >= 1020 ? i - 1020 : r);
-	r = (i >= 1275 ? 255 : r);
-	g = (i >= 0 ? i : 0);
-	g = (i >= 255 ? 255 : g);
-	g = (i >= 765 ? 1020 - i : g);
-	g = (i >= 1020 ? 0 : g);
-	b = (i >= 510 ? i - 510 : 0);
-	b = (i >= 765 ? 255 : b);
-	b = (i >= 1275 ? 1530 - i : b);
-	return ((r << 16) + (g << 8) + b);
 }
 
 int			**make_addr(t_mlx *mlx)

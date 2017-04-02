@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:56:07 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/01 22:05:04 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/04/02 02:24:56 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,110 +27,6 @@ void		fractal(t_all *a, t_square b)
 			a->frac(a, b, &var);
 }
 
-void		mandelbrot(t_all *a, t_square b, t_fr *v)
-{
-	v->z = 0;
-	v->i = 0;
-	v->c = b.x1 / a->act->zoom + a->act->x1 +
-		(b.y1 / a->act->zoom + a->act->y1) * I;
-	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 1 << 8
-	&& v->i < a->act->i_max)
-	{
-		v->z = v->z * v->z + v->c;
-		v->i++;
-	}
-	if (a->smooth == 0)
-		ppx(v->i == a->act->i_max ? 0x0 : get_color(a, v, a->act->i_max)
-		, b.x1, b.y1, a->mlx);
-	else
-		ppx(v->i == a->act->i_max ? 0x0 :
-		ft_pal(v->i, a->act->i_max, a->colors[a->pal], a->p_max)
-		, b.x1, b.y1, a->mlx);
-}
-
-void		julia(t_all *a, t_square b, t_fr *v)
-{
-	v->i = 0;
-	v->z = b.x1 / a->act->zoom + a->act->x1 +
-		(b.y1 / a->act->zoom + a->act->y1) * I;
-	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 16
-	&& v->i < a->act->i_max)
-	{
-		v->z = v->z * v->z + v->c;
-		v->i++;
-	}
-	if (a->smooth == 0)
-		ppx(v->i == a->act->i_max ? 0x0 : get_color(a, v, a->act->i_max)
-		, b.x1, b.y1, a->mlx);
-	else
-		ppx(v->i == a->act->i_max ? 0x0 :
-		ft_pal(v->i, a->act->i_max, a->colors[a->pal], a->p_max)
-		, b.x1, b.y1, a->mlx);
-}
-
-void		turtle(t_all *a, t_square b, t_fr *v)
-{
-	v->i = 0;
-	v->z = b.x1 / a->act->zoom + a->act->x1 +
-		(b.y1 / a->act->zoom + a->act->y1) * I;
-	while (cimag(v->z) * cimag(v->z) < 10
-	&& v->i < a->act->i_max)
-	{
-		v->z = v->z * v->z * v->z * v->z * v->z + v->c;
-		v->i++;
-	}
-	if (a->smooth == 0)
-		ppx(v->i == a->act->i_max ? 0x0 : get_color(a, v, a->act->i_max)
-		, b.x1, b.y1, a->mlx);
-	else
-		ppx(v->i == a->act->i_max ? 0x0 :
-		ft_pal(v->i, a->act->i_max, a->colors[a->pal], a->p_max)
-		, b.x1, b.y1, a->mlx);
-}
-
-void		jul_new(t_all *a, t_square b, t_fr *v)
-{
-	v->i = 0;
-	v->z = b.x1 / a->act->zoom + a->act->x1 +
-		(b.y1 / a->act->zoom + a->act->y1) * I;
-	while (cimag(v->z) * cimag(v->z) + creal(v->z) * creal(v->z) < 4
-	&& v->i < a->act->i_max)
-	{
-		v->z = (v->z * v->z - v->z) * (v->z * v->z - v->z)
-			+ (v->z + v->c) * (v->z + v->c) * (v->z + v->c);
-		v->i++;
-	}
-	
-	if (a->smooth == 0)
-		ppx(v->i == a->act->i_max ? 0x0 : get_color(a, v, a->act->i_max)
-		, b.x1, b.y1, a->mlx);
-	else
-		ppx(v->i == a->act->i_max ? 0x0 :
-		ft_pal(v->i, a->act->i_max, a->colors[a->pal], a->p_max)
-		, b.x1, b.y1, a->mlx);
-}
-
-void		powdelbrot(t_all *a, t_square b, t_fr *v)
-{
-	v->z = 0;
-	v->i = 0;
-	v->c = b.x1 / a->act->zoom + a->act->x1 +
-		(b.y1 / a->act->zoom + a->act->y1) * I;
-	while (creal(v->z) * creal(v->z) + cimag(v->z) * cimag(v->z) < 16
-	&& v->i < a->act->i_max)
-	{
-		v->z = cpow(v->z, a->pdlb.pow) + v->c;
-		v->i++;
-	}
-	if (a->smooth == 0)
-		ppx(v->i == a->act->i_max ? 0x0 : get_color(a, v, a->act->i_max)
-		, b.x1, b.y1, a->mlx);
-	else
-		ppx(v->i == a->act->i_max ? 0x0 :
-		ft_pal(v->i, a->act->i_max, a->colors[a->pal], a->p_max)
-		, b.x1, b.y1, a->mlx);
-}
-
 void		pow_julia(t_all *a, t_square b, t_fr *v)
 {
 	v->i = 0;
@@ -143,7 +39,7 @@ void		pow_julia(t_all *a, t_square b, t_fr *v)
 		v->i++;
 	}
 	if (a->smooth == 0)
-		ppx(v->i == a->act->i_max ? 0x0 : get_color(a, v, a->act->i_max)
+		ppx(v->i == a->act->i_max ? 0x0 : get_color(a, v)
 		, b.x1, b.y1, a->mlx);
 	else
 		ppx(v->i == a->act->i_max ? 0x0 :
@@ -168,7 +64,7 @@ void		newton(t_all *a, t_square b, t_fr *v)
 		v->z0 = v->z - fn(v->z) / v->dz;
 		v->i++;
 		if (cabs(v->z0 - v->z) < a->act->lim)
-			break;
+			break ;
 		v->z = v->z0;
 	}
 	ppx(v->i == a->act->i_max ? 0x0 :
@@ -183,13 +79,13 @@ void		rosace(t_all *a, t_square b, t_fr *v)
 	v->z = b.x1 / a->act->zoom + a->act->x1 +
 			(b.y1 / a->act->zoom + a->act->y1) * I;
 	while (v->i < a->act->i_max
-	&& creal(v->z) * creal(v->z) + cimag(v->z) + cimag(v->z)<16)
+	&& creal(v->z) * creal(v->z) + cimag(v->z) + cimag(v->z) < 16)
 	{
 		v->dz = (fn(v->z + v->h) - fn(v->z)) / v->h;
 		v->z0 = v->z - fn(v->z) / v->dz;
 		v->i++;
 		if (cabs(v->z0 - v->z) < a->act->lim)
-			break;
+			break ;
 		v->z = v->z0 * v->z0;
 	}
 	ppx(v->i == a->act->i_max ? 0x0 :

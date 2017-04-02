@@ -6,7 +6,7 @@
 #    By: bsouchet <bsouchet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/04 18:49:05 by bsouchet          #+#    #+#              #
-#    Updated: 2017/04/01 15:02:34 by gmonein          ###   ########.fr        #
+#    Updated: 2017/04/02 03:03:15 by gmonein          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ C = clang
 
 NAME = fractal
 
-FLAGS = -O3 -lpthread
+FLAGS = -O3 -Wall -Wextra -Werror
 
 LIBFT = libft
 
@@ -29,6 +29,7 @@ DIR_MLX_X11 = mlx/minilibx_X11
 HEADERS = includes
 
 SOURCES = fractal.c \
+		  fractal2.c \
 		  init.c \
 		  key_hook.c \
 		  main.c \
@@ -36,6 +37,7 @@ SOURCES = fractal.c \
 		  mouse_hook.c \
 		  thread.c \
 		  mini_frac.c \
+		  exit.c \
 		  color.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
