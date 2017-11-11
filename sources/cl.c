@@ -14,7 +14,7 @@ static inline void				cl_get_context(t_cl *cl)
 
 	if (clGetPlatformIDs(1, cl->platform_id, &cl->ret_num_platforms))
 		errors(ERR_CL, "clGetPlatformIDfailure --");
-	if (clGetDeviceIDs(cl->platform_id[0], CL_DEVICE_TYPE_CPU, 1,
+	if (clGetDeviceIDs(cl->platform_id[0], CL_DEVICE_TYPE_GPU, 1,
 						cl->device_id, &cl->ret_num_devices))
 		errors(ERR_CL, "clGetDeviceIDs failure --");
 	cl->context = clCreateContext(NULL, 1, cl->device_id, NULL, NULL, &ret);
