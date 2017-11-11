@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:56:54 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/02 02:02:03 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/11 20:13:18 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@ t_cpx		cpx_add(t_cpx a, t_cpx b)
 	return (res);
 }
 
-int			ft_pal(double i, double i_max, int *pal, int p_max)
-{
-	return (pal[(int)(i * p_max / i_max)]);
-}
 
 int			**make_addr(t_mlx *mlx)
 {

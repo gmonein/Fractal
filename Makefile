@@ -6,15 +6,15 @@
 #    By: bsouchet <bsouchet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/04 18:49:05 by bsouchet          #+#    #+#              #
-#    Updated: 2017/04/02 03:03:15 by gmonein          ###   ########.fr        #
+#    Updated: 2017/11/11 16:39:20 by gmonein          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-C = clang
+CC = gcc -fsanitize=address -g3
 
 NAME = fractal
 
-FLAGS = -O3 -Wall -Wextra -Werror
+FLAGS = -O3
 
 LIBFT = libft
 
@@ -38,7 +38,8 @@ SOURCES = fractal.c \
 		  thread.c \
 		  mini_frac.c \
 		  exit.c \
-		  color.c
+		  color.c \
+		  cl.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
@@ -49,11 +50,11 @@ all: temporary $(NAME)
 $(NAME): $(OBJS)
 	@make -C $(LIBFT)
 	@make -C $(DIR_MLX)
-	@$(CC) $(FLAGS) -L $(LIBFT) -lft -o $@ $^ -framework OpenGL -framework AppKit -L $(DIR_MLX) -lmlx
+	@$(CC) $(FLAGS) -L $(LIBFT) -lft -o $@ $^ -framework OpenGL -framework AppKit -framework opencl -L $(DIR_MLX) -lmlx
 
 X11: temporary $(OBJS)
 	@make -C $(LIBFT)
-	$(CC) $(FLAGS) -o $(NAME) -L $(LIBFT) $(OBJS) mlx/minilibx_X11/libmlx.a -lm -lXext -lX11
+	$(CC) $(FLAGS) -o $(NAME) -I $(HEADERS) -L $(LIBFT) $(OBJS) mlx/minilibx_X11/libmlx.a -lm -lXext -lX11
 
 temporary:
 	@mkdir -p temporary

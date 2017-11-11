@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 02:53:51 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/02 03:04:17 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/11 20:12:39 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	free_thread(t_o_thread **thread, int count)
 
 void	exit_fractal(t_all *a)
 {
+	exit(0);
 	mlx_destroy_window(a->mlx->mlx, a->mlx->win);
 	mlx_destroy_image(a->mlx->mlx, a->mlx->image);
 	mlx_destroy_image(a->mlx->mlx, a->mini_mlx.image);

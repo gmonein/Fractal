@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:49:48 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/02 02:53:43 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/11 21:55:42 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int				keyboard_hook(int keycode, t_all *a)
 {
 	a->keycode = keycode;
 	if (keycode == K_Q)
-		a->act->i_max++;
+		a->act->i_max += 2;
 	else if (keycode == K_W)
-		a->act->i_max--;
+		a->act->i_max -= 2;
 	else if (keycode == K_A)
 		a->pal = (a->pal == 3 ? 0 : a->pal + 1);
 	else if (keycode == K_Z)
@@ -55,7 +55,7 @@ int				keyboard_hook(int keycode, t_all *a)
 	else if (keycode == K_C)
 		a->block = (a->block == 1 ? 0 : 1);
 	else if (keycode == K_S)
-		a->smooth = (a->smooth == 1 ? 0 : 1);
+		a->act->smooth = (a->act->smooth >= 1 ? 0 : 1);
 	else if (keycode == K_ESC)
 		exit_fractal(a);
 	else

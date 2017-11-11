@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 02:01:23 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/02 02:01:46 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/11 21:50:54 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,12 @@ int			parsing(char *argv, t_all *a)
 	(ft_strcmp(argv, N_RSCE) == 0 ? a->act = &a->rsce : 0);
 	(ft_strcmp(argv, N_TRTL) == 0 ? a->act = &a->trtl : 0);
 	(ft_strcmp(argv, N_ISLD) == 0 ? a->act = &a->jlnw : 0);
-	(ft_strcmp(argv, N_MDLB) == 0 ? a->frac = (void *)mandelbrot : 0);
+	a->kfrac = &a->cl.kernels[KRN_MDLB_ID];
+	(ft_strcmp(argv, N_JUL) == 0 ? a->kfrac = &a->cl.kernels[KRN_JULIA_ID] : 0);
+	(ft_strcmp(argv, N_TRTL) == 0 ? a->kfrac = &a->cl.kernels[KRN_TURTLE_ID] : 0);
+	(ft_strcmp(argv, N_ISLD) == 0 ? a->kfrac = &a->cl.kernels[KRN_ISLAND_ID] : 0);
+	(ft_strcmp(argv, N_MDLB) == 0 ? a->kfrac = &a->cl.kernels[KRN_MDLB_ID] : 0);
+/*	(ft_strcmp(argv, N_MDLB) == 0 ? a->frac = (void *)mandelbrot : 0);
 	(ft_strcmp(argv, N_PDLB) == 0 ? a->frac = (void *)powdelbrot : 0);
 	(ft_strcmp(argv, N_JUL) == 0 ? a->frac = (void *)julia : 0);
 	(ft_strcmp(argv, N_PJUL) == 0 ? a->frac = (void *)pow_julia : 0);
@@ -68,7 +73,7 @@ int			parsing(char *argv, t_all *a)
 	(ft_strcmp(argv, N_RSCE) == 0 ? a->frac = (void *)rosace : 0);
 	(ft_strcmp(argv, N_TRTL) == 0 ? a->frac = (void *)turtle : 0);
 	(ft_strcmp(argv, N_ISLD) == 0 ? a->frac = (void *)jul_new : 0);
-	if (a->act == NULL)
+*/	if (a->act == NULL)
 	{
 		print_usage();
 		return (0);
@@ -90,6 +95,6 @@ int			main(int argc, char **argv)
 	}
 	init(&a);
 	redraw(&a);
-	print_mini_frac(&a);
+//	print_mini_frac(&a);
 	return (mlx_loop(a.mlx->mlx));
 }

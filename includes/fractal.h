@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 02:27:35 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/02 03:06:14 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/11 21:46:22 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,13 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <complex.h>
+# include <string.h>
 # include <math.h>
 # include "time.h"
 # include <pthread.h>
+# include "libcl.h"
+# include "shared_include.h"
 
-# define DIVLOG 1.44269504088896338700465094007086008787155151367187500000000000
-# define WIN_X 1024
-# define WIN_Y 924
-# define IMGF_X 1024
-# define IMGF_Y 724
-# define M_IMGF_X 256
-# define M_IMGF_Y 100
-# define IMGF_MX 512
-# define IMGF_MY 512
-# define PI 3.14159265359
 # define WINDOWS_NAME "gmonein's fractal"
 # define N_MDLB "Mandelbrot"
 # define N_PDLB "Powdelbrot"
@@ -80,25 +73,6 @@ typedef struct			s_square
 	int					y2;
 }						t_square;
 
-typedef struct			s_fractal
-{
-	int					id;
-	double				x1;
-	double				x2;
-	double				y1;
-	double				y2;
-	long double			zoom;
-	int					i_max;
-	int					img_x;
-	int					img_y;
-	double				ci;
-	double				c;
-	double				pow;
-	double				der;
-	double				lim;
-	double				zoom_i;
-}						t_fractal;
-
 typedef struct			s_mlx
 {
 	void				*win;
@@ -135,8 +109,10 @@ typedef struct			s_all
 	t_fractal			*act;
 	int					keycode;
 	int					mrdw;
+	t_fracarg			fracarg;
 	int					colors[4][16];
 	void				(*frac)(struct s_all *, t_square, t_fr *);
+	void				*kfrac;
 	int					pal;
 	int					p_max;
 	int					smooth;
@@ -148,6 +124,7 @@ typedef struct			s_all
 	double				c;
 	double				ci;
 	t_o_thread			**thread;
+	t_cl				cl;
 }						t_all;
 
 void					exit_fractal(t_all *a);
@@ -180,5 +157,6 @@ void					init(t_all *a);
 int						mouse_pos(int x, int y, t_all *a);
 int						mouse_clic(int button, int x, int y, t_all *a);
 int						keyboard_hook(int keycode, t_all *a);
+void					cl_init(t_all *a);
 
 #endif

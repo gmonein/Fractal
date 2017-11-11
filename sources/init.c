@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:57:11 by gmonein           #+#    #+#             */
-/*   Updated: 2017/04/02 03:04:54 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/11 21:48:50 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ t_mlx				make_mini_mlx(t_all *a)
 
 	mlx.mlx = a->mlx->mlx;
 	mlx.win = a->mlx->win;
-	mlx.image = mlx_new_image(mlx.mlx, M_IMGF_X, M_IMGF_Y);
+	mlx.image = mlx_new_image(mlx.mlx, WIN_X, WIN_Y);
 	mlx.addr = mlx_get_data_addr(mlx.image, &mlx.bpp, &mlx.line_size,
 																&mlx.edian);
-	mlx.img = make_m_addr(&mlx);
+//	mlx.img = make_m_addr(&mlx);
 	return (mlx);
 }
 
@@ -108,8 +108,10 @@ void				init(t_all *a)
 	a->p_max = 6;
 	a->mlx = make_mlx();
 	a->mini_mlx = make_mini_mlx(a);
-	init_fractal(a, IMGF_X / 4.2);
+	init_fractal(a, WIN_X / 4.2);
+	cl_init(a);
 	mlx_hook(a->mlx->win, 2, (1L << 0), keyboard_hook, a);
 	mlx_hook(a->mlx->win, 6, (1L << 6), mouse_pos, a);
 	mlx_mouse_hook(a->mlx->win, mouse_clic, a);
+	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, 0, 0);
 }
