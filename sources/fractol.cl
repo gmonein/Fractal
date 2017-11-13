@@ -1,7 +1,7 @@
 # include "shared_include.h"
 
-#define DOUBLE_PRECISION (0)
-
+#define DOUBLE_PRECISION (1)
+#pragma OPENCL EXTENSION cl_khr_fp64 : enable
 typedef double2 cl_double_complex;
 typedef float2 cl_float_complex;
 

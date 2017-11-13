@@ -6,7 +6,7 @@
 #    By: bsouchet <bsouchet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/04 18:49:05 by bsouchet          #+#    #+#              #
-#    Updated: 2017/11/11 16:39:20 by gmonein          ###   ########.fr        #
+#    Updated: 2017/11/13 20:32:59 by gmonein          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ DIR_S = sources
 
 DIR_O = temporary
 
-DIR_MLX = mlx/minilibx_el_capitan
+DIR_MLX = mlx/minilibx_sierra/
 
 DIR_MLX_X11 = mlx/minilibx_X11
 

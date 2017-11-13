@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:57:11 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/12 00:45:25 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/13 20:57:36 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,25 +76,28 @@ static void			init_colors(t_all *a)
 	a->colors[0][2] = 0xFFB733;
 	a->colors[0][3] = 0xF57336;
 	a->colors[0][4] = 0xC22121;
-	a->colors[0][5] = 0x7F1637;
-	a->colors[1][0] = 0xFF0000;
-	a->colors[1][1] = 0xFFFF00;
-	a->colors[1][2] = 0x00FF00;
-	a->colors[1][3] = 0x00FFFF;
-	a->colors[1][4] = 0x0000FF;
-	a->colors[1][5] = 0xFF00FF;
+	a->colors[0][5] = 0xFFB733;
+
+	a->colors[1][0] = 0x091D36;
+	a->colors[1][1] = 0x3A4E7A;
+	a->colors[1][2] = 0x5E83BA;
+	a->colors[1][3] = 0xC2D2E9;
+	a->colors[1][4] = 0xF1F1F0;
+	a->colors[1][5] = 0x3A4E7A;
+
 	a->colors[2][0] = 0x2E4600;
 	a->colors[2][1] = 0x486B00;
 	a->colors[2][2] = 0xA2C523;
 	a->colors[2][3] = 0x7D4427;
 	a->colors[2][4] = 0xA2C523;
 	a->colors[2][5] = 0x486B00;
-	a->colors[3][0] = 0xD4D4D4;
-	a->colors[3][1] = 0x8C8C8C;
-	a->colors[3][2] = 0x666666;
-	a->colors[3][3] = 0x3D3D3D;
-	a->colors[3][4] = 0x666666;
-	a->colors[3][5] = 0x8C8C8C;
+
+	a->colors[3][0] = 0xFA6500;
+	a->colors[3][1] = 0xE91601;
+	a->colors[3][2] = 0xE3A10F;
+	a->colors[3][3] = 0xF0C090;
+	a->colors[3][4] = 0xD8370B;
+	a->colors[3][5] = 0xE91601;
 }
 
 void				init(t_all *a)
@@ -102,7 +105,7 @@ void				init(t_all *a)
 	init_colors(a);
 	a->block = 0;
 	a->pal = 2;
-	a->smooth = 0;
+	a->smooth = 1;
 	a->thread_cnt = 16;
 	a->thread = malloc_thread(a->thread_cnt);
 	a->p_max = 6;
