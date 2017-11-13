@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:50:53 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/11 20:13:21 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/13 18:12:30 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,24 @@ static void		find_fractal(int x, int y, t_all *a)
 
 static void		zoom_in(int x, int y, long double i, t_all *a)
 {
-	long double	dx;
-	long double	dy;
+	size_t		size_x = WIN_X - LEFT_MENU;
+	size_t		size_y = WIN_Y;
+	double		dx = (double)x / (double)size_x - 0.5;
+	double		dy = (double)y / (double)size_y - 0.5;
 
-	dx = x;
-	dy = y;
-	dx *= (a->act->zoom + i) / (a->act->zoom);
-	dy *= (a->act->zoom + i) / (a->act->zoom);
-	a->act->x1 += ((dx - IMGF_MX) / (a->act->zoom)) / 2;
-	a->act->x2 += ((dx - IMGF_MX) / (a->act->zoom)) / 2;
-	a->act->y1 += ((dy - IMGF_MY) / (a->act->zoom)) / 2;
-	a->act->y2 += ((dy - IMGF_MY) / (a->act->zoom)) / 2;
-	a->act->zoom = a->act->zoom + i;
+	double		pos_o = 0 / a->act->zoom + a->act->x1;
+	double		pos_i = size_x / a->act->zoom + a->act->x1;
+	double		pos_m = x / a->act->zoom + a->act->x1;
+
+	a->act->zoom += i;
+
+	double		pos_ii = size_x / a->act->zoom + a->act->x1;
+	double		pos_mm = x / a->act->zoom + a->act->x1;
+	double		diff = pos_i - pos_o;
+
+	a->act->x1 += diff;
+	printf("%lf %lf %lf\n", pos_o, pos_i, pos_m);	//a->act->x1 += dx / a->act->zoom;
+	//a->act->y1 += dy / a->act->zoom;
 }
 
 static void		zoom_out(int x, int y, long double i, t_all *a)
@@ -58,9 +64,7 @@ static void		zoom_out(int x, int y, long double i, t_all *a)
 	dx *= (a->act->zoom + i) / (a->act->zoom);
 	dy *= (a->act->zoom + i) / (a->act->zoom);
 	a->act->x1 += (((double)dx - (double)IMGF_MX) / (a->act->zoom));
-	a->act->x2 += (((double)dx - (double)IMGF_MX) / (a->act->zoom));
 	a->act->y1 += (((double)dy - (double)IMGF_MY) / (a->act->zoom));
-	a->act->y2 += (((double)dy - (double)IMGF_MY) / (a->act->zoom));
 	a->act->zoom -= i;
 }
 
@@ -82,19 +86,13 @@ int				mouse_clic(int button, int x, int y, t_all *a)
 
 int				mouse_pos(int x, int y, t_all *a)
 {
-	if (x > 0 && y > 0 && x < IMGF_X && y < IMGF_Y && a->done == 1
+	if (x > 0 && y > 0 && x < WIN_X && y < WIN_Y && a->done == 1
 	&& a->block == 0)
 	{
-		if (a->act->id == ID_JUL || a->act->id == ID_PJUL
-		|| a->act->id == ID_TRTL || a->act->id == ID_ISLD)
-		{
-			a->act->ci = (double)((double)y - IMGF_Y / 2) / 380;
-			a->act->c = (double)((double)x - IMGF_X / 2) / 760;
-		}
-		else if (a->act->id == ID_PDLB)
+		a->act->ci = (double)((double)y - IMGF_Y / 2) / 380;
+		a->act->c = (double)((double)x - IMGF_X / 2) / 760;
+		if (a->act->id == ID_PDLB)
 			a->act->pow = (double)((double)(x + y - 50) / 10 + 20) / 10;
-		else
-			return (0);
 		redraw(a);
 	}
 	return (0);

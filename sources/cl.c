@@ -174,6 +174,8 @@ void				cl_init(t_all *env)
 	cl_create_kernel(&env->cl, &env->cl.kernels[KRN_ISLAND_ID], &init);
 	init.name = "turtle";
 	cl_create_kernel(&env->cl, &env->cl.kernels[KRN_TURTLE_ID], &init);
+	init.name = "newton";
+	cl_create_kernel(&env->cl, &env->cl.kernels[KRN_NEWTON_ID], &init);
 }
 
 cl_event			cl_run(t_cl *cl, t_clkernel *kernel)

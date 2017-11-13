@@ -20,6 +20,8 @@
 	#include <CL/cl.h>
 #endif
 
+# define LEFT_MENU			WIN_X / 4
+
 # define ERR_CL				42
 # define MINI_FRAC_H		400
 
@@ -43,7 +45,8 @@
 # define KRN_MDLB_ID			1
 # define KRN_TURTLE_ID			2
 # define KRN_ISLAND_ID			3
-# define NB_KRN					4
+# define KRN_NEWTON_ID			4
+# define NB_KRN					5
 
 # define KRN_NAME			"julia"
 # define KRN_NBSOURCE		1
@@ -52,7 +55,7 @@
 # define KRN_MEMARG			(int[]){MEM_PIXEL_ID, MEM_ARG_ID, MEM_OARG_ID}
 # define KRN_CMPFLG			"-I includes"
 # define KRN_WRKDIM			2
-# define KRN_GWRKSIZE		(size_t[3]){WIN_X, WIN_Y, 0}
+# define KRN_GWRKSIZE		(size_t[3]){WIN_X - LEFT_MENU, WIN_Y, 0}
 # define KRN_LWRKSIZE		(size_t[3]){1, 0, 0}
 
 typedef struct				s_kernel_init

@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 02:01:23 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/11 21:50:54 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/12 00:46:25 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_mlx		*make_mlx(void)
 	mlx = (t_mlx *)malloc(sizeof(t_mlx));
 	mlx->mlx = mlx_init();
 	mlx->win = mlx_new_window(mlx->mlx, WIN_X, WIN_Y, WINDOWS_NAME);
-	mlx->image = mlx_new_image(mlx->mlx, IMGF_X, IMGF_Y);
+	mlx->image = mlx_new_image(mlx->mlx, WIN_X, WIN_Y);
 	mlx->addr = mlx_get_data_addr(mlx->image, &mlx->bpp, &mlx->line_size,
 																&mlx->edian);
 	mlx->img = make_addr(mlx);
@@ -65,7 +65,9 @@ int			parsing(char *argv, t_all *a)
 	(ft_strcmp(argv, N_TRTL) == 0 ? a->kfrac = &a->cl.kernels[KRN_TURTLE_ID] : 0);
 	(ft_strcmp(argv, N_ISLD) == 0 ? a->kfrac = &a->cl.kernels[KRN_ISLAND_ID] : 0);
 	(ft_strcmp(argv, N_MDLB) == 0 ? a->kfrac = &a->cl.kernels[KRN_MDLB_ID] : 0);
+	(ft_strcmp(argv, N_NWTN) == 0 ? a->kfrac = &a->cl.kernels[KRN_NEWTON_ID] : 0);
 /*	(ft_strcmp(argv, N_MDLB) == 0 ? a->frac = (void *)mandelbrot : 0);
+	(ft_strcmp(argv, N_MDLB) == 0 ? a->frac = (void *)mandelbrot : 0);
 	(ft_strcmp(argv, N_PDLB) == 0 ? a->frac = (void *)powdelbrot : 0);
 	(ft_strcmp(argv, N_JUL) == 0 ? a->frac = (void *)julia : 0);
 	(ft_strcmp(argv, N_PJUL) == 0 ? a->frac = (void *)pow_julia : 0);

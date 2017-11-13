@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:57:11 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/11 21:48:50 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/12 00:45:25 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void				init(t_all *a)
 	a->thread = malloc_thread(a->thread_cnt);
 	a->p_max = 6;
 	a->mlx = make_mlx();
-	a->mini_mlx = make_mini_mlx(a);
-	init_fractal(a, WIN_X / 4.2);
+//	a->mini_mlx = make_mini_mlx(a);
+	init_fractal(a, (WIN_X - LEFT_MENU) / 4.2);
 	cl_init(a);
 	mlx_hook(a->mlx->win, 2, (1L << 0), keyboard_hook, a);
 	mlx_hook(a->mlx->win, 6, (1L << 6), mouse_pos, a);

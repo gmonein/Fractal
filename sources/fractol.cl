@@ -12,23 +12,6 @@ typedef double TYPE;
 typedef cl_float_complex cl_complex;
 typedef float TYPE;
 #endif
-/*
-inline TYPE cl_complex_real_part(const cl_complex* n){
-	return n->x;
-}
-
-inline TYPE cl_complex_imaginary_part(const cl_complex* n){
-	return n->y;
-}
-
-inline TYPE cl_complex_modulus(const cl_complex* n){
-	return (sqrt( (n->x*n->x)+(n->y*n->y) ));
-}
-
-inline cl_complex cl_complex_add(const cl_complex* a, const cl_complex* b){
-	return (cl_complex)( a->x + b->x, a->y + b->y );
-}
-
 inline cl_complex cl_complex_multiply(const cl_complex* a, const cl_complex* b){
 	return (cl_complex)(a->x*b->x - a->y*b->y,  a->x*b->y + a->y*b->x);
 }
@@ -44,6 +27,22 @@ inline cl_complex cl_complex_ipow(const cl_complex* base ,  int exp ){
 		}
 	
 	return res;
+}
+
+inline TYPE cl_complex_real_part(const cl_complex* n){
+	return n->x;
+}
+
+inline TYPE cl_complex_imaginary_part(const cl_complex* n){
+	return n->y;
+}
+
+inline TYPE cl_complex_modulus(const cl_complex* n){
+	return (sqrt( (n->x*n->x)+(n->y*n->y) ));
+}
+
+inline cl_complex cl_complex_add(const cl_complex* a, const cl_complex* b){
+	return (cl_complex)( a->x + b->x, a->y + b->y );
 }
 
 inline cl_complex cl_complex_divide(const cl_complex* a, const cl_complex* b){
@@ -88,7 +87,7 @@ inline cl_complex cl_complex_exp(const cl_complex* n){
 inline cl_complex cl_complex_log(const cl_complex* z){
 	return (cl_complex)( log(cl_complex_modulus(z)) , cl_complex_argument(z));
 }
-*/
+
 typedef struct			s_fr
 {
 	cl_complex			c;
@@ -148,6 +147,8 @@ __kernel void		mandelbrot(__global int *pixels, __global t_fractal *args, __glob
 {
 	int			x = get_global_id(0);
 	int			y = get_global_id(1);
+	int			off_x = get_global_offset(0);
+	int			off_y = get_global_offset(1);
 
 	t_fr		v;
 	cl_complex	bz;
@@ -157,8 +158,8 @@ __kernel void		mandelbrot(__global int *pixels, __global t_fractal *args, __glob
 	v.z.x = 0;//args->c;
 	v.z.y = 0;//args->ci;
 	v.i = 0;
-	v.c.x = (double)x / zoom + args->x1;
-	v.c.y = (double)y / zoom + args->y1;
+	v.c.x = (double)(x - off_x) / zoom + args->x1;
+	v.c.y = (double)(y - off_y)/ zoom + args->y1;
 	while (v.z.x * v.z.x + v.z.y * v.z.y < 1 << 8 && v.i < i_max)
 	{
 		bz = v.z;
@@ -177,6 +178,8 @@ __kernel void		julia(__global int *pixels, __global t_fractal *args, __global in
 {
 	int			x = get_global_id(0);
 	int			y = get_global_id(1);
+	int			off_x = get_global_offset(0);
+	int			off_y = get_global_offset(1);
 
 	t_fr		v;
 	cl_complex	bz;
@@ -186,8 +189,8 @@ __kernel void		julia(__global int *pixels, __global t_fractal *args, __global in
 	v.c.x = args->c;
 	v.c.y = args->ci;
 	v.i = 0;
-	v.z.x = (double)x / zoom + args->x1;
-	v.z.y = (double)y / zoom + args->y1;
+	v.z.x = (double)(x - off_x) / zoom + args->x1;
+	v.z.y = (double)(y - off_y) / zoom + args->y1;
 	while (v.z.x * v.z.x + v.z.y * v.z.y < 16 && v.i < i_max)
 	{
 		bz = v.z;
@@ -204,8 +207,118 @@ __kernel void		julia(__global int *pixels, __global t_fractal *args, __global in
 
 __kernel void		turtle(__global int *pixels, __global t_fractal *args, __global int *pal)
 {
+	int			x = get_global_id(0);
+	int			y = get_global_id(1);
+	int			off_x = get_global_offset(0);
+	int			off_y = get_global_offset(1);
+
+	t_fr		v;
+	cl_complex	bz;
+	size_t		i_max = args->i_max;
+	double		zoom = args->zoom;
+
+	v.c.x = args->c;
+	v.c.y = args->ci;
+	v.i = 0;
+	v.z.x = (double)(x - off_x) / zoom + args->x1;
+	v.z.y = (double)(y - off_y) / zoom + args->y1;
+	while (v.z.x * v.z.x + v.z.y * v.z.y < 16 && v.i < i_max)
+	{
+		bz = v.z;
+		v.z = cl_complex_ipow(&v.z, 3);
+/*		v.z = cl_complex_multiply(&v.z, &v.z);
+		v.z = cl_complex_multiply(&v.z, &v.z);
+		v.z = cl_complex_multiply(&bz, &v.z);
+*/	//	v.z.x = bz.x * bz.x - bz.y * bz.y;
+	//	v.z.y = bz.x * bz.y * 2;
+		v.z += v.c;
+		v.i++;
+	}
+	if (args->smooth == 0)
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : ft_pal(v.i, i_max, pal, 5);
+	else
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
 }
 
 __kernel void		island(__global int *pixels, __global t_fractal *args, __global int *pal)
 {
+	int			x = get_global_id(0);
+	int			y = get_global_id(1);
+	int			off_x = get_global_offset(0);
+	int			off_y = get_global_offset(1);
+
+	t_fr		v;
+	cl_complex	bz;
+	cl_complex	buf1;
+	cl_complex	buf2;
+	cl_complex	buf3;
+	size_t		i_max = args->i_max;
+	double		zoom = args->zoom;
+
+	v.c.x = args->c;
+	v.c.y = args->ci;
+	v.i = 0;
+	v.z.x = (double)(x - off_x) / zoom + args->x1;
+	v.z.y = (double)(y - off_y) / zoom + args->y1;
+	while (v.z.x * v.z.x + v.z.y * v.z.y < 16 && v.i < i_max)
+	{
+		bz = v.z;
+		buf1 = cl_complex_multiply(&bz, &bz) - bz;
+		buf2 = bz + v.c;
+
+		v.z = cl_complex_multiply(&buf1, &buf1);
+		buf3 = cl_complex_multiply(&buf2, &buf2);
+		v.z += cl_complex_multiply(&buf3, &buf3);
+		v.i++;
+	}
+	if (args->smooth == 0)
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : ft_pal(v.i, i_max, pal, 5);
+	else
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
+}
+
+__kernel void		newton(__global int *pixels, __global t_fractal *args, __global int *pal)
+{
+	int			x = get_global_id(0);
+	int			y = get_global_id(1);
+	int			off_x = get_global_offset(0);
+	int			off_y = get_global_offset(1);
+
+	t_fr		v;
+	cl_complex	buf1;
+	cl_complex	buf2;
+	cl_complex	buf3;
+	size_t		i_max = args->i_max;
+	double		zoom = args->zoom;
+	double		lim = args->lim;
+
+	v.h.x = args->der;
+	v.h.y = args->der;
+	v.i = 0;
+	v.z.x = (double)(x - off_x) / zoom + args->x1;
+	v.z.y = (double)(y - off_y)/ zoom + args->y1;
+	while (v.i < i_max)
+	{
+		buf1 = v.h + v.z;
+		buf2 = cl_complex_multiply(&buf1, &buf1);
+		buf2 = cl_complex_multiply(&buf1, &buf2);
+		buf2 -= 1.0f;
+		buf1 = v.z;
+		buf3 = cl_complex_multiply(&buf1, &buf1);
+		buf3 = cl_complex_multiply(&buf1, &buf3);
+		buf3 -= 1.0f;
+		v.dz = buf1 - buf3;
+		v.dz = cl_complex_divide(&v.dz, &v.h);
+		v.z0 = v.z - buf3;
+		v.z0 = cl_complex_divide(&v.z0, &v.dz);
+		buf3 = v.z0 - v.z;
+		v.z = cl_complex_multiply(&v.z0, &v.z0);
+		if (cl_complex_modulus(&buf3) < lim)
+			break ;
+		v.i++;
+	}
+	if (args->smooth == 0)
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : ft_pal(v.i, i_max, pal, 5);
+	else
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
 }
