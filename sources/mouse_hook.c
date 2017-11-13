@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:50:53 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/13 18:12:30 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/13 18:24:04 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,15 @@ static void		zoom_in(int x, int y, long double i, t_all *a)
 {
 	size_t		size_x = WIN_X - LEFT_MENU;
 	size_t		size_y = WIN_Y;
-	double		dx = (double)x / (double)size_x - 0.5;
-	double		dy = (double)y / (double)size_y - 0.5;
 
-	double		pos_o = 0 / a->act->zoom + a->act->x1;
-	double		pos_i = size_x / a->act->zoom + a->act->x1;
-	double		pos_m = x / a->act->zoom + a->act->x1;
+	double diff_x = (size_x / a->act->zoom) - (size_x / (a->act->zoom + i));
+	double diff_y = (size_y / a->act->zoom) - (size_y / (a->act->zoom + i));
 
+	a->act->x1 += diff_x / 2;
+	a->act->y1 += diff_y / 2;
+	a->act->x1 += diff_x * ((double)x / (double)size_x - 0.5);
+	a->act->y1 += diff_y * ((double)y / (double)size_y - 0.5);
 	a->act->zoom += i;
-
-	double		pos_ii = size_x / a->act->zoom + a->act->x1;
-	double		pos_mm = x / a->act->zoom + a->act->x1;
-	double		diff = pos_i - pos_o;
-
-	a->act->x1 += diff;
-	printf("%lf %lf %lf\n", pos_o, pos_i, pos_m);	//a->act->x1 += dx / a->act->zoom;
-	//a->act->y1 += dy / a->act->zoom;
 }
 
 static void		zoom_out(int x, int y, long double i, t_all *a)
