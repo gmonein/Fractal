@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:50:53 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/13 18:24:04 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/13 18:25:16 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int				mouse_clic(int button, int x, int y, t_all *a)
 		zoom_in(x, y, a->act->zoom_i *= 1.10f, a);
 	else if (x > 0 && x < IMGF_X && y > 0 && y < IMGF_Y
 		&& (button == 2 || button == 5))
-		zoom_out(x, y, a->act->zoom_i *= (1 / 1.10f), a);
+		zoom_in(x, y, -1 * (a->act->zoom_i *= 1.10f), a);
+		//zoom_out(x, y, a->act->zoom_i *= (1 / 1.10f), a);
 	else if (x > 0 && x < IMGF_X && y > IMGF_Y && y < WIN_Y)
 		find_fractal(x / M_IMGF_X, (y - IMGF_Y) / M_IMGF_Y, a);
 	else
