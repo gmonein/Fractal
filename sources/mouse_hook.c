@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:50:53 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/13 18:25:16 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/13 21:12:25 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,16 @@ static void		zoom_in(int x, int y, long double i, t_all *a)
 
 static void		zoom_out(int x, int y, long double i, t_all *a)
 {
-	double	dx;
-	double	dy;
+	size_t		size_x = WIN_X - LEFT_MENU;
+	size_t		size_y = WIN_Y;
 
-	dx = x;
-	dy = y;
-	dx *= (a->act->zoom + i) / (a->act->zoom);
-	dy *= (a->act->zoom + i) / (a->act->zoom);
-	a->act->x1 += (((double)dx - (double)IMGF_MX) / (a->act->zoom));
-	a->act->y1 += (((double)dy - (double)IMGF_MY) / (a->act->zoom));
+	double diff_x = (size_x / a->act->zoom) - (size_x / (a->act->zoom - i));
+	double diff_y = (size_y / a->act->zoom) - (size_y / (a->act->zoom - i));
+
+	a->act->x1 += diff_x / 2;
+	a->act->y1 += diff_y / 2;
+	a->act->x1 += diff_x * ((double)x / (double)size_x - 0.5);
+	a->act->y1 += diff_y * ((double)y / (double)size_y - 0.5);
 	a->act->zoom -= i;
 }
 
@@ -68,8 +69,7 @@ int				mouse_clic(int button, int x, int y, t_all *a)
 		zoom_in(x, y, a->act->zoom_i *= 1.10f, a);
 	else if (x > 0 && x < IMGF_X && y > 0 && y < IMGF_Y
 		&& (button == 2 || button == 5))
-		zoom_in(x, y, -1 * (a->act->zoom_i *= 1.10f), a);
-		//zoom_out(x, y, a->act->zoom_i *= (1 / 1.10f), a);
+		zoom_out(x, y, a->act->zoom_i *= (1 / 1.10f), a);
 	else if (x > 0 && x < IMGF_X && y > IMGF_Y && y < WIN_Y)
 		find_fractal(x / M_IMGF_X, (y - IMGF_Y) / M_IMGF_Y, a);
 	else

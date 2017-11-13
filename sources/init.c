@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:57:11 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/13 20:57:36 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/13 21:11:11 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 
 static void			init_fractal(t_all *a, int zoom)
 {
-	a->mdlb = (t_fractal){ ID_MDLB, -2.4f, 0.0f, -1.5f, 1.2f, zoom, 50,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0};
+	a->mdlb = (t_fractal){ ID_MDLB, -2.4f, 0.0f, -1.5f, 1.2f, zoom, 250,
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};
 	a->mdlb.zoom_i = 10;
-	a->pdlb = (t_fractal){ ID_PDLB, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 50,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 3.0f, 0, 0, 0};
+	a->pdlb = (t_fractal){ ID_PDLB, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 3.0f, 0, 0, 0, 1};
 	a->pdlb.zoom_i = 10;
-	a->jul = (t_fractal){ ID_JUL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 50,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0};
+	a->jul = (t_fractal){ ID_JUL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};
 	a->jul.zoom_i = 10;
-	a->pjul = (t_fractal){ ID_PJUL, -2.1, 0.0, -1.2, 1.2, zoom, 50,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 3.0f, 0, 0, 0};
+	a->pjul = (t_fractal){ ID_PJUL, -2.1, 0.0, -1.2, 1.2, zoom, 250,
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 3.0f, 0, 0, 0, 1};
 	a->pjul.zoom_i = 10;
-	a->nwtn = (t_fractal){ ID_NWTN, -2.1f, 1.0f, -1.8f, 1.0f, zoom, 20,
-		(2.0f) * zoom, (2.0f) * zoom, 0, 0, 0, 0.000001f, 0.001f, 0};
+	a->nwtn = (t_fractal){ ID_NWTN, -2.1f, 1.0f, -1.8f, 1.0f, zoom, 220,
+		(2.0f) * zoom, (2.0f) * zoom, 0, 0, 0, 0.000001f, 0.001f, 0, 1};
 	a->nwtn.zoom_i = 10;
-	a->rsce = (t_fractal){ ID_RSCE, -2.7, 1.0f, -2.1f, 1.0f, zoom * 0.8, 20,
-		(2.1f) * zoom, (2.0f) * zoom, 0, 0, 0, 0.000001f, 0.001f, 0};
+	a->rsce = (t_fractal){ ID_RSCE, -2.7, 1.0f, -2.1f, 1.0f, zoom * 0.8, 220,
+		(2.1f) * zoom, (2.0f) * zoom, 0, 0, 0, 0.000001f, 0.001f, 0, 1};
 	a->rsce.zoom_i = 10;
-	a->trtl = (t_fractal){ ID_TRTL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 50,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0};
+	a->trtl = (t_fractal){ ID_TRTL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};
 	a->trtl.zoom_i = 10;
-	a->jlnw = (t_fractal){ ID_ISLD, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 50,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0};
+	a->jlnw = (t_fractal){ ID_ISLD, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};
 	a->jlnw.zoom_i = 10;
 }
 
@@ -104,7 +104,7 @@ void				init(t_all *a)
 {
 	init_colors(a);
 	a->block = 0;
-	a->pal = 2;
+	a->pal = 1;
 	a->smooth = 1;
 	a->thread_cnt = 16;
 	a->thread = malloc_thread(a->thread_cnt);
