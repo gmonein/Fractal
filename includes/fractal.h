@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 02:27:35 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/12 00:02:28 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/14 04:51:35 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <pthread.h>
 # include "libcl.h"
 # include "shared_include.h"
+# include <time.h>
 
 # define WINDOWS_NAME "gmonein's fractal"
 # define N_MDLB "Mandelbrot"
@@ -125,6 +126,9 @@ typedef struct			s_all
 	double				ci;
 	t_o_thread			**thread;
 	t_cl				cl;
+	double				render_time;
+	int					fps;
+	int					i_max;
 }						t_all;
 
 void					exit_fractal(t_all *a);
@@ -141,7 +145,7 @@ int						**make_addr(t_mlx *mlx);
 t_cpx					cpx_add(t_cpx a, t_cpx b);
 t_cpx					cpx_mul(t_cpx a, t_cpx b);
 t_o_thread				**malloc_thread(int count);
-void					redraw(t_all *a);
+int						redraw(t_all *a);
 void					fractal(t_all *a, t_square b);
 void					mandelbrot(t_all *a, t_square b, t_fr *v);
 void					julia(t_all *a, t_square b, t_fr *v);

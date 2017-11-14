@@ -6,7 +6,7 @@
 #    By: bsouchet <bsouchet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/04 18:49:05 by bsouchet          #+#    #+#              #
-#    Updated: 2017/11/13 20:32:59 by gmonein          ###   ########.fr        #
+#    Updated: 2017/11/14 04:50:53 by gmonein          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CC = gcc -fsanitize=address -g3
 
 NAME = fractal
 
-FLAGS = -O3
+FLAGS =
 
 LIBFT = libft
 

@@ -22,8 +22,8 @@ typedef struct			s_fractal
 	int					i_max;
 	int					img_x;
 	int					img_y;
-	double				ci;
 	double				c;
+	double				ci;
 	double				pow;
 	double				der;
 	double				lim;

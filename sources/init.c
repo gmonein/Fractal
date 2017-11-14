@@ -6,12 +6,11 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:57:11 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/13 21:11:11 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/14 06:46:47 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractal.h"
-
 static void			init_fractal(t_all *a, int zoom)
 {
 	a->mdlb = (t_fractal){ ID_MDLB, -2.4f, 0.0f, -1.5f, 1.2f, zoom, 250,
@@ -20,8 +19,8 @@ static void			init_fractal(t_all *a, int zoom)
 	a->pdlb = (t_fractal){ ID_PDLB, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
 		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 3.0f, 0, 0, 0, 1};
 	a->pdlb.zoom_i = 10;
-	a->jul = (t_fractal){ ID_JUL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};
+	a->jul = (t_fractal){ ID_JUL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 1000,
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0.067546, -0.75, 0, 0, 0, 0, 1};
 	a->jul.zoom_i = 10;
 	a->pjul = (t_fractal){ ID_PJUL, -2.1, 0.0, -1.2, 1.2, zoom, 250,
 		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 3.0f, 0, 0, 0, 1};
@@ -33,10 +32,10 @@ static void			init_fractal(t_all *a, int zoom)
 		(2.1f) * zoom, (2.0f) * zoom, 0, 0, 0, 0.000001f, 0.001f, 0, 1};
 	a->rsce.zoom_i = 10;
 	a->trtl = (t_fractal){ ID_TRTL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, -0.071053, 0.632895, 0, 0, 0, 0, 1};
 	a->trtl.zoom_i = 10;
 	a->jlnw = (t_fractal){ ID_ISLD, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, -0.518421, -0.225, 0, 0, 0, 0, 1};
 	a->jlnw.zoom_i = 10;
 }
 
@@ -92,12 +91,12 @@ static void			init_colors(t_all *a)
 	a->colors[2][4] = 0xA2C523;
 	a->colors[2][5] = 0x486B00;
 
-	a->colors[3][0] = 0xFA6500;
-	a->colors[3][1] = 0xE91601;
-	a->colors[3][2] = 0xE3A10F;
-	a->colors[3][3] = 0xF0C090;
-	a->colors[3][4] = 0xD8370B;
-	a->colors[3][5] = 0xE91601;
+	a->colors[3][0] = 0xfdcf58;
+	a->colors[3][1] = 0xf07f13;
+	a->colors[3][2] = 0xf27d0c;
+	a->colors[3][3] = 0x800909;
+	a->colors[3][4] = 0xf07f13;
+	a->colors[3][5] = 0xfdcf58;
 }
 
 void				init(t_all *a)
@@ -116,5 +115,6 @@ void				init(t_all *a)
 	mlx_hook(a->mlx->win, 2, (1L << 0), keyboard_hook, a);
 	mlx_hook(a->mlx->win, 6, (1L << 6), mouse_pos, a);
 	mlx_mouse_hook(a->mlx->win, mouse_clic, a);
+	mlx_loop_hook(a->mlx->mlx, redraw, a);
 	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, 0, 0);
 }

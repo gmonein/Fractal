@@ -20,7 +20,7 @@
 	#include <CL/cl.h>
 #endif
 
-# define LEFT_MENU			WIN_X / 4
+# define LEFT_MENU			WIN_X / 5
 
 # define ERR_CL				42
 # define MINI_FRAC_H		400
