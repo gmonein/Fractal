@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:49:48 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/14 06:46:40 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/15 05:02:22 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void		reset_frac(t_fractal *f, int zoom)
 {
 	if (f->id == ID_JUL)
 		*f = (t_fractal){ ID_JUL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 1000,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0.067546, -0.75, 0, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, -0.75, 0.067546, 0, 0, 0, 0, 1};
 	if (f->id == ID_MDLB)
 		*f = (t_fractal){ ID_MDLB, -2.4f, 0.0f, -1.5f, 1.2f, zoom, 250,
 		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};

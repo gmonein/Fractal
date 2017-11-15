@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:50:53 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/14 06:20:39 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/15 05:09:07 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,16 @@ static void		zoom_out(int x, int y, long double i, t_all *a)
 	a->act->x1 += diff_x * ((double)x / (double)size_x - 0.5);
 	a->act->y1 += diff_y * ((double)y / (double)size_y - 0.5);
 	a->act->zoom -= i;
+	printf("lol\n");
 }
 
 int				mouse_clic(int button, int x, int y, t_all *a)
 {
 	if (x > 0 && x < WIN_X - LEFT_MENU && y > 0 && y < WIN_Y
-		&& (button == 1 || button == 4))
+		&& (button == 1 || button == 4 || button == 7))
 		zoom_in(x, y, a->act->zoom_i *= 1.10f, a);
 	else if (x > 0 && x < WIN_X - LEFT_MENU && y > 0 && y < WIN_Y
-		&& (button == 2 || button == 5))
+		&& (button == 2 || button == 5 || button == 6))
 		zoom_out(x, y, a->act->zoom_i *= 0.98f, a);
 	else if (x > WIN_X - LEFT_MENU)
 		find_fractal(x, y, a);

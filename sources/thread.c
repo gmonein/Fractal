@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/30 15:32:27 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/14 06:36:16 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/15 05:05:18 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,27 @@ void				menu(t_all *a)
 
 	a->cl.mems[MEM_ARG_ID].ptr = &a->other;
 	a->other = (t_fractal){ ID_JUL, -1.7f, -0.4f, -1.1f, 1.2f, zoom, a->jul.i_max,
-		(0.6f + 2.1f) * zoom, (2.4f) * zoom, a->jul.c, a->jul.ci, 0, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (2.4f) * zoom, a->jul.c, a->jul.ci, 0, 0, 0, 0, a->act->smooth};
 	refrash_clmem(&a->cl, &a->cl.mems[MEM_ARG_ID], CL_MEM_WRITE, 1);
 	draw_frac(a, a->cl.kernels[KRN_JULIA_ID], (size_t[3]){WIN_X - LEFT_MENU, size_y * pos, 0}, (size_t[3]){LEFT_MENU, size_y, 0});
 
 	pos++;
 	a->other = (t_fractal){ ID_JUL, -1.7f, 0.0f, -1.0f, 1.2f, zoom, a->trtl.i_max,
 		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, a->trtl.c, a->trtl.ci, 0, 0
-		, 0, 0, 1};
+		, 0, 0, a->act->smooth};
 	refrash_clmem(&a->cl, &a->cl.mems[MEM_ARG_ID], CL_MEM_WRITE, 1);
 	draw_frac(a, a->cl.kernels[KRN_TURTLE_ID], (size_t[3]){WIN_X - LEFT_MENU, size_y * pos, 0}, (size_t[3]){LEFT_MENU, size_y, 0});
 
 	pos++;
 	a->other = (t_fractal){ ID_JUL, -1.0f, 0.0f, -1.0f, 1.2f, zoom, a->jlnw.i_max,
 		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, a->jlnw.c, a->jlnw.ci,
-		0, 0, 0, 0, 1};
+		0, 0, 0, 0, a->act->smooth};
 	refrash_clmem(&a->cl, &a->cl.mems[MEM_ARG_ID], CL_MEM_WRITE, 1);
 	draw_frac(a, a->cl.kernels[KRN_ISLAND_ID], (size_t[3]){WIN_X - LEFT_MENU, size_y * pos, 0}, (size_t[3]){LEFT_MENU, size_y, 0});
 
 	pos++;
 	a->other = (t_fractal){ ID_MDLB, -2.4f, 0.0f, -1.0f, 1.2f, zoom, a->mdlb.i_max,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 1, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 1, 0, 0, 0, a->act->smooth};
 	refrash_clmem(&a->cl, &a->cl.mems[MEM_ARG_ID], CL_MEM_WRITE, 1);
 	draw_frac(a, a->cl.kernels[KRN_MDLB_ID], (size_t[3]){WIN_X - LEFT_MENU, size_y * pos, 0}, (size_t[3]){LEFT_MENU, size_y, 0});
 	clFinish(a->cl.command_queue);
@@ -102,9 +102,6 @@ int				redraw(t_all *a)
 {
 	int		i;
 	void	*ret;
-	clock_t		begin_frame;
-	clock_t		end_frame;
-	clock_t		delta_time;
 	char		buf[64];
 	char		buf2[64];
 
@@ -112,7 +109,6 @@ int				redraw(t_all *a)
 	clFinish(a->cl.command_queue);
 	if (a->done)
 		return (0);
-	begin_frame = clock();
 	a->cl.mems[MEM_ARG_ID].ptr = a->act;
 	refrash_clmem(&a->cl, &a->cl.mems[MEM_ARG_ID], CL_MEM_WRITE, 0);
 	a->cl.mems[MEM_OARG_ID].ptr = &a->colors[a->pal];
@@ -123,24 +119,11 @@ int				redraw(t_all *a)
 	clFinish(a->cl.command_queue);
 	refrash_clmem(&a->cl, &a->cl.mems[MEM_PIXEL_ID], CL_MEM_READ, 1);
 	mlx_put_image_to_window(a->mlx->mlx, a->mlx->win, a->mlx->image, 0, 0);
-	end_frame = clock();
-	delta_time = end_frame - begin_frame;
-	a->i_max = a->act->i_max;
-	a->render_time = (double)delta_time * 1000 / CLOCKS_PER_SEC;//clockToMilliseconds(delta_time);
-	a->fps = 1000 / a->render_time;
-	snprintf(buf, sizeof(buf), "%d", a->fps);
-	strcpy(buf2, "Fps : ");
-	strcat(buf2, buf);
-	mlx_string_put(a->mlx->mlx, a->mlx->win, 10, 5, 0xFFFFFF, buf2);
-	snprintf(buf, sizeof(buf), "%lf", a->render_time);
-	strcpy(buf2, "Render time : ");
-	strcat(buf2, buf);
-	strcat(buf2, " ms");
-	mlx_string_put(a->mlx->mlx, a->mlx->win, 10, 25, 0xFFFFFF, buf2);
-	snprintf(buf, sizeof(buf), "%d", a->i_max);
+
+	snprintf(buf, sizeof(buf), "%d", a->act->i_max);
 	strcpy(buf2, "Iterations : ");
 	strcat(buf2, buf);
-	mlx_string_put(a->mlx->mlx, a->mlx->win, 10, 40, 0xFFFFFF, buf2);
+	mlx_string_put(a->mlx->mlx, a->mlx->win, WIN_X - LEFT_MENU + 3, 5, 0xFFFFFF, buf2);
 	a->keycode = -1;
 	a->done = 1;
 	return (0);

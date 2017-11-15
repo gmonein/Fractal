@@ -200,7 +200,7 @@ __kernel void		mandelbrot(__global int *pixels, __global t_fractal *args, __glob
 		v.i++;
 	}
 	if (args->smooth == 0)
-		pixels[x + y * WIN_X] = v.i == i_max ? 0 : ft_pal(v.i, i_max, pal, 5);
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
 	else
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
 }
@@ -231,7 +231,7 @@ __kernel void		julia(__global int *pixels, __global t_fractal *args, __global in
 		v.i++;
 	}
 	if (args->smooth == 0)
-		pixels[x + y * WIN_X] = v.i == i_max ? 0 : ft_pal(v.i, i_max, pal, 5);
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
 	else
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
 }
@@ -266,7 +266,7 @@ __kernel void		turtle(__global int *pixels, __global t_fractal *args, __global i
 		v.i++;
 	}
 	if (args->smooth == 0)
-		pixels[x + y * WIN_X] = v.i == i_max ? 0 : ft_pal(v.i, i_max, pal, 5);
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
 	else
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
 }
@@ -303,7 +303,7 @@ __kernel void		island(__global int *pixels, __global t_fractal *args, __global i
 		v.i++;
 	}
 	if (args->smooth == 0)
-		pixels[x + y * WIN_X] = v.i == i_max ? 0 : ft_pal(v.i, i_max, pal, 5);
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
 	else
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
 }
@@ -349,7 +349,7 @@ __kernel void		newton(__global int *pixels, __global t_fractal *args, __global i
 		v.i++;
 	}
 	if (args->smooth == 0)
-		pixels[x + y * WIN_X] = v.i == i_max ? 0 : ft_pal(v.i, i_max, pal, 5);
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
 	else
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
 }
