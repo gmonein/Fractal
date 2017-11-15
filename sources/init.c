@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:57:11 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/15 05:40:55 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/15 07:41:09 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ static void			init_colors(t_all *a)
 	a->colors[1][4] = 0xF1F1F0;
 	a->colors[1][5] = 0x3A4E7A;
 
-	a->colors[2][0] = 0x2E4600;
-	a->colors[2][1] = 0x486B00;
-	a->colors[2][2] = 0xA2C523;
-	a->colors[2][3] = 0x7D4427;
-	a->colors[2][4] = 0xA2C523;
-	a->colors[2][5] = 0x486B00;
+	a->colors[2][5] = 0xe56b6b;
+	a->colors[2][4] = 0xdd5151;
+	a->colors[2][3] = 0xba3404;
+	a->colors[2][2] = 0xab1f1f;
+	a->colors[2][1] = 0x940808;
+	a->colors[2][0] = 0xba3404;
 
 	a->colors[3][0] = 0xfdcf58;
 	a->colors[3][1] = 0xf07f13;
@@ -97,6 +97,13 @@ static void			init_colors(t_all *a)
 	a->colors[3][3] = 0x800909;
 	a->colors[3][4] = 0xf07f13;
 	a->colors[3][5] = 0xfdcf58;
+
+	a->colors[4][5] = 0xf0e5c4;
+	a->colors[4][4] = 0xead8a1;
+	a->colors[4][3] = 0xe1c782;
+	a->colors[4][2] = 0xd2b25b;
+	a->colors[4][1] = 0xc3983a;
+	a->colors[4][0] = 0xe1c782;
 }
 
 void				init(t_all *a)

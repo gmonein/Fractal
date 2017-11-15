@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 02:27:35 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/14 04:51:35 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/15 07:40:30 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ typedef struct			s_all
 	int					keycode;
 	int					mrdw;
 	t_fracarg			fracarg;
-	int					colors[4][16];
+	int					colors[5][16];
 	void				(*frac)(struct s_all *, t_square, t_fr *);
 	void				*kfrac;
 	int					pal;

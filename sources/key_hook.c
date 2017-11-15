@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:49:48 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/15 06:27:44 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/15 07:45:31 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void		reset_frac(t_fractal *f, int zoom)
 
 int				keyboard_hook(int keycode, t_all *a)
 {
-	int		c_boost = 2;
+	float	c_boost = 1.3;
 	int		m_boost = 8;
 	a->keycode = keycode;
 	if (keycode == K_Q)
@@ -39,7 +39,7 @@ int				keyboard_hook(int keycode, t_all *a)
 	else if (keycode == K_W && a->act->i_max > 10)
 		a->act->i_max -= 1 + a->act->i_max * 0.01;
 	else if (keycode == K_A)
-		a->pal = (a->pal == 3 ? 0 : a->pal + 1);
+		a->pal = (a->pal == 4 ? 0 : a->pal + 1);
 	else if (keycode == K_Z)
 		a->act->pow++;
 	else if (keycode == K_X)

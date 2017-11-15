@@ -52,7 +52,7 @@ void			compilation_error(cl_program program, void *cl)
 
 	clGetProgramBuildInfo(program, ((t_cl *)cl)->device_id[0],
 			CL_PROGRAM_BUILD_LOG, MAX_ERR_LOG, &buf, NULL);
-	write(1, buf, strlen(buf));
+//	write(1, buf, strlen(buf));
 }
 
 void			cl_create_kernel(t_cl *cl, t_clkernel *dst, t_kernel_init *init)
