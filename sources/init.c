@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 21:57:11 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/15 05:02:59 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/15 05:40:55 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 static void			init_fractal(t_all *a, int zoom)
 {
 	a->mdlb = (t_fractal){ ID_MDLB, -2.4f, 0.0f, -1.5f, 1.2f, zoom, 250,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 1, 0, 0, 0, 1};
 	a->mdlb.zoom_i = 10;
 	a->pdlb = (t_fractal){ ID_PDLB, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
 		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 3.0f, 0, 0, 0, 1};
@@ -102,9 +102,9 @@ static void			init_colors(t_all *a)
 void				init(t_all *a)
 {
 	init_colors(a);
-	a->block = 0;
-	a->pal = 1;
-	a->smooth = 1;
+	a->block = 1;
+	a->pal = 0;
+	a->smooth = 0;
 	a->thread_cnt = 16;
 	a->thread = malloc_thread(a->thread_cnt);
 	a->p_max = 6;

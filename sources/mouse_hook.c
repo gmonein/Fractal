@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:50:53 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/15 05:09:07 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/15 05:47:52 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 static void		find_fractal(int x, int y, t_all *a)
 {
+	int			smooth;
+
+	smooth = a->act->smooth;
 	y = (double)y / (double)WIN_Y * 4;
 	a->act = (y == 0 ? &a->jul : a->act);
 	a->act = (y == 1 ? &a->trtl : a->act);
@@ -23,6 +26,7 @@ static void		find_fractal(int x, int y, t_all *a)
 	a->kfrac = (y == 1 ? (void *)&a->cl.kernels[KRN_TURTLE_ID] : (void *)a->kfrac);
 	a->kfrac = (y == 2 ? (void *)&a->cl.kernels[KRN_ISLAND_ID] : (void *)a->kfrac);
 	a->kfrac = (y == 3 ? (void *)&a->cl.kernels[KRN_MDLB_ID] : (void *)a->kfrac);
+	a->act->smooth = smooth;
 }
 
 static void		zoom_in(int x, int y, long double i, t_all *a)
@@ -38,6 +42,7 @@ static void		zoom_in(int x, int y, long double i, t_all *a)
 	a->act->x1 += diff_x * ((double)x / (double)size_x - 0.5);
 	a->act->y1 += diff_y * ((double)y / (double)size_y - 0.5);
 	a->act->zoom += i;
+	a->act->zoom_i *= 1.10;
 }
 
 static void		zoom_out(int x, int y, long double i, t_all *a)
@@ -48,22 +53,24 @@ static void		zoom_out(int x, int y, long double i, t_all *a)
 	double diff_x = (size_x / a->act->zoom) - (size_x / (a->act->zoom - i));
 	double diff_y = (size_y / a->act->zoom) - (size_y / (a->act->zoom - i));
 
+	if (a->act->zoom - i < 0.001)
+		return ;
 	a->act->x1 += diff_x / 2;
 	a->act->y1 += diff_y / 2;
 	a->act->x1 += diff_x * ((double)x / (double)size_x - 0.5);
 	a->act->y1 += diff_y * ((double)y / (double)size_y - 0.5);
 	a->act->zoom -= i;
-	printf("lol\n");
+	a->act->zoom_i *= 0.90;
 }
 
 int				mouse_clic(int button, int x, int y, t_all *a)
 {
 	if (x > 0 && x < WIN_X - LEFT_MENU && y > 0 && y < WIN_Y
 		&& (button == 1 || button == 4 || button == 7))
-		zoom_in(x, y, a->act->zoom_i *= 1.10f, a);
+		zoom_in(x, y, a->act->zoom_i, a);
 	else if (x > 0 && x < WIN_X - LEFT_MENU && y > 0 && y < WIN_Y
 		&& (button == 2 || button == 5 || button == 6))
-		zoom_out(x, y, a->act->zoom_i *= 0.98f, a);
+		zoom_out(x, y, a->act->zoom_i, a);
 	else if (x > WIN_X - LEFT_MENU)
 		find_fractal(x, y, a);
 	else

@@ -163,7 +163,7 @@ int			get_color(__global t_fractal *a, t_fr *t, __global int *color)
 	if ((int)t->i < 0 || (int)t->i > 5)
 		t->i = ((double)((int)((double)t->i * 1000000) % 5000000) / 1000000);
 	return (ft_gt_colors(color[(int)t->i],
-				color[(int)((int)t->i == 5 ? 0 : t->i + 1)],
+				color[(int)((int)t->i == 6 ? 0 : t->i + 1)],
 				(double)(t->i - (int)t->i)));
 }
 
@@ -199,10 +199,12 @@ __kernel void		mandelbrot(__global int *pixels, __global t_fractal *args, __glob
 		v.z += v.c;
 		v.i++;
 	}
-	if (args->smooth == 0)
+	if (args->smooth == 2)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
-	else
+	else if (args->smooth == 0)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
+	else
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : 0x00FFFFFF;
 }
 
 __kernel void		julia(__global int *pixels, __global t_fractal *args, __global int *pal)
@@ -230,10 +232,12 @@ __kernel void		julia(__global int *pixels, __global t_fractal *args, __global in
 		v.z += v.c;
 		v.i++;
 	}
-	if (args->smooth == 0)
+	if (args->smooth == 2)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
-	else
+	else if (args->smooth == 0)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
+	else
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : 0x00FFFFFF;
 }
 
 __kernel void		turtle(__global int *pixels, __global t_fractal *args, __global int *pal)
@@ -265,10 +269,12 @@ __kernel void		turtle(__global int *pixels, __global t_fractal *args, __global i
 		v.z += v.c;
 		v.i++;
 	}
-	if (args->smooth == 0)
+	if (args->smooth == 2)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
-	else
+	else if (args->smooth == 0)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
+	else
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : 0x00FFFFFF;
 }
 
 __kernel void		island(__global int *pixels, __global t_fractal *args, __global int *pal)
@@ -302,10 +308,12 @@ __kernel void		island(__global int *pixels, __global t_fractal *args, __global i
 		v.z += cl_complex_multiply(&buf3, &buf3);
 		v.i++;
 	}
-	if (args->smooth == 0)
+	if (args->smooth == 2)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
-	else
+	else if (args->smooth == 0)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
+	else
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : 0x00FFFFFF;
 }
 
 __kernel void		newton(__global int *pixels, __global t_fractal *args, __global int *pal)
@@ -348,8 +356,10 @@ __kernel void		newton(__global int *pixels, __global t_fractal *args, __global i
 			break ;
 		v.i++;
 	}
-	if (args->smooth == 0)
+	if (args->smooth == 2)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : pal[(int)v.i % 6];
-	else
+	else if (args->smooth == 0)
 		pixels[x + y * WIN_X] = v.i == i_max ? 0 : get_color(args, &v, pal);
+	else
+		pixels[x + y * WIN_X] = v.i == i_max ? 0 : 0x00FFFFFF;
 }

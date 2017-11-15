@@ -6,7 +6,7 @@
 /*   By: gmonein <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/02 01:49:48 by gmonein           #+#    #+#             */
-/*   Updated: 2017/11/15 05:02:22 by gmonein          ###   ########.fr       */
+/*   Updated: 2017/11/15 06:27:44 by gmonein          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ static void		reset_frac(t_fractal *f, int zoom)
 {
 	if (f->id == ID_JUL)
 		*f = (t_fractal){ ID_JUL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 1000,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, -0.75, 0.067546, 0, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, -0.75, 0.067546, 0, 0, 0, 0, f->smooth};
 	if (f->id == ID_MDLB)
 		*f = (t_fractal){ ID_MDLB, -2.4f, 0.0f, -1.5f, 1.2f, zoom, 250,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 0, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, 0, 0, 1, 0, 0, 0, f->smooth};
 	if (f->id == ID_TRTL)
 		*f = (t_fractal){ ID_TRTL, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 1000,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, -0.071053, 0.632895, 0, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, -0.071053, 0.632895, 0, 0, 0, 0, f->smooth};
 	if (f->id == ID_ISLD)
 		*f = (t_fractal){ ID_ISLD, -2.1f, 0.0f, -1.2f, 1.2f, zoom, 250,
-		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, -0.518421, -0.225, 0, 0, 0, 0, 1};
+		(0.6f + 2.1f) * zoom, (1.2f + 1.2f) * zoom, -0.518421, -0.225, 0, 0, 0, 0, f->smooth};
 	f->zoom_i = 10;
 }
 
@@ -67,7 +67,10 @@ int				keyboard_hook(int keycode, t_all *a)
 	else if (keycode == K_C)
 		a->block = (a->block == 1 ? 0 : 1);
 	else if (keycode == K_S)
-		a->act->smooth = (a->act->smooth >= 1 ? 0 : 1);
+	{
+		a->act->smooth++;
+		a->act->smooth %= 3;
+	}
 	else if (keycode == K_R)
 		printf("c: %lf ci:%lf\n", a->act->c, a->act->ci);
 	else if (keycode == K_ESC)
